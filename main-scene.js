@@ -1,4 +1,4 @@
-class Assignment_One_Scene extends Scene_Component {
+class Assignment_Two_Skeleton extends Scene_Component {
     // The scene begins by requesting the camera, shapes, and materials it will need.
     constructor(context, control_box) {
         super(context, control_box);
@@ -20,11 +20,17 @@ class Assignment_One_Scene extends Scene_Component {
         // multiple cubes.  Don't define more than one blueprint for the
         // same thing here.
         const shapes = {
+            'square': new Square(),
+            'circle': new Circle(15),
+            'pyramid': new Tetrahedron(false),
+            'simplebox': new SimpleCube(),
             'box': new Cube(),
-            'ball': new Subdivision_Sphere(4),
-            'prism': new TriangularPrism()
+            'cylinder': new Cylinder(15),
+            'cone': new Cone(20),
+            'ball': new Subdivision_Sphere(4)
         }
         this.submit_shapes(context, shapes);
+        this.shape_count = Object.keys(shapes).length;
 
         // Make some Material objects available to you:
         this.clay = context.get_instance(Phong_Shader).material(Color.of(.9, .5, .9, 1), {
@@ -34,11 +40,30 @@ class Assignment_One_Scene extends Scene_Component {
         this.plastic = this.clay.override({
             specularity: .6
         });
+        this.texture_base = context.get_instance(Phong_Shader).material(Color.of(0, 0, 0, 1), {
+            ambient: 1,
+            diffusivity: 0.4,
+            specularity: 0.3
+        });
+
+        // Load some textures for the demo shapes
+        this.shape_materials = {};
+        const shape_textures = {
+            square: "assets/butterfly.png",
+            box: "assets/even-dice-cubemap.png",
+            ball: "assets/soccer_sph_s_resize.png",
+            cylinder: "assets/treebark.png",
+            pyramid: "assets/tetrahedron-texture2.png",
+            simplebox: "assets/tetrahedron-texture2.png",
+            cone: "assets/hypnosis.jpg",
+            circle: "assets/hypnosis.jpg"
+        };
+        for (let t in shape_textures)
+            this.shape_materials[t] = this.texture_base.override({
+                texture: context.get_instance(shape_textures[t])
+            });
         
         this.lights = [new Light(Vec.of(10, 10, 20, 1), Color.of(1, .4, 1, 1), 100000)];
-
-        this.blue = Color.of(0, 0, 1, 1);
-        this.yellow = Color.of(1, 1, 0, 1);
 
         this.t = 0;
     }
@@ -46,9 +71,6 @@ class Assignment_One_Scene extends Scene_Component {
 
     // Draw the scene's buttons, setup their actions and keyboard shortcuts, and monitor live measurements.
     make_control_panel() {
-        this.key_triggered_button("Hover in Place", ["m"], () => {
-            this.hover = !this.hover;
-        });
         this.key_triggered_button("Pause Time", ["n"], () => {
             this.paused = !this.paused;
         });
@@ -58,30 +80,23 @@ class Assignment_One_Scene extends Scene_Component {
     display(graphics_state) {
         // Use the lights stored in this.lights.
         graphics_state.lights = this.lights;
-
-        // Variable m will be a temporary matrix that helps us draw most shapes.
-        // It starts over as the identity every single frame - coordinate axes at the origin.
-        let m = Mat4.identity();
                 
         // Find how much time has passed in seconds, and use that to place shapes.
         if (!this.paused)
             this.t += graphics_state.animation_delta_time / 1000;
         const t = this.t;
 
-        // TODO: Replace the below example code with your own code to draw the butterfly.
-        this.shapes.ball.draw(
-            graphics_state,
-            m.times(Mat4.translation(Vec.of(10 * Math.sin(t), 5 * Math.sin(2 * t), 0))),
-            this.plastic.override({color: this.blue}));
-        this.shapes.box.draw(
-            graphics_state,
-            m.times(Mat4.translation(Vec.of(-5, 0, 0))).times(Mat4.rotation(t, Vec.of(0, 1, 0))),
-            this.clay.override({color: this.yellow}));
-        this.shapes.prism.draw(
-            graphics_state,
-            m.times(Mat4.translation(Vec.of(5, -1, 0))).times(Mat4.rotation(t, Vec.of(0, 1, 0))).times(Mat4.scale(Vec.of(2, 2, 1))),
-            this.plastic.override({color: this.yellow}));
+        // Draw some demo textured shapes
+        let spacing = 6;
+        let m = Mat4.translation(Vec.of(-1 * (spacing / 2) * (this.shape_count - 1), 0, 0));
+        for (let k in this.shapes) {
+            this.shapes[k].draw(
+                graphics_state,
+                m.times(Mat4.rotation(t, Vec.of(0, 1, 0))),
+                this.shape_materials[k] || this.plastic);
+            m = m.times(Mat4.translation(Vec.of(spacing, 0, 0)));
+        }
     }
 }
 
-window.Assignment_One_Scene = window.classes.Assignment_One_Scene = Assignment_One_Scene;
+window.Assignment_Two_Skeleton = window.classes.Assignment_Two_Skeleton = Assignment_Two_Skeleton;
