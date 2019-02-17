@@ -996,7 +996,7 @@ class Canvas_Widget {
         const row = control_panels.insertRow(0);
         
         // Second parameter sets background color.
-        this.canvas_manager = new Canvas_Manager(canvas, Color.of(0, 0, 0, 1)); 
+        this.canvas_manager = new Canvas_Manager(canvas, Color.of(0.3, 0.6, 0.9, 1)); 
 
         // Register the initially requested scenes to the render loop.
         for (let scene_class_name of scenes)
