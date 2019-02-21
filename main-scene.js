@@ -2,7 +2,7 @@ class Assignment_Two_Skeleton extends Scene_Component {
   // The scene begins by requesting the camera, shapes, and materials it will need.
   constructor(context, control_box) {
     super(context, control_box);
-
+	//this is a git test == krish
     // First, include a secondary Scene that provides movement controls:
     if (!context.globals.has_controls)
       context.register_scene_component(
