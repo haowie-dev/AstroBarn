@@ -2,7 +2,7 @@ class Assignment_Two_Skeleton extends Scene_Component {
   // The scene begins by requesting the camera, shapes, and materials it will need.
   constructor(context, control_box) {
     super(context, control_box);
-	//this is a git test == krish
+	//this is a git test == krish test
     // First, include a secondary Scene that provides movement controls:
     if (!context.globals.has_controls)
       context.register_scene_component(
@@ -112,6 +112,39 @@ class Assignment_Two_Skeleton extends Scene_Component {
     // this.draw_cow(graphics_state, m);
     this.draw_barn(graphics_state, m);
 
+
+    this.draw_fence(graphics_state, m, 600, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 500, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 400, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 300, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 200, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 100, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 0, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -100, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -200, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -300, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -400, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -500, 0, 300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -600, 0, 300, 1.571, 0, 1, 0);
+
+
+
+    this.draw_fence(graphics_state, m, 600, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 500, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 400, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 300, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 200, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 100, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, 0, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -100, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -200, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -300, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -400, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -500, 0, -300, 1.571, 0, 1, 0);
+    this.draw_fence(graphics_state, m, -600, 0, -300, 1.571, 0, 1, 0);
+
+
+
     //         m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
 
     // Draw some demo textured shapes
@@ -125,6 +158,61 @@ class Assignment_Two_Skeleton extends Scene_Component {
     //             m = m.times(Mat4.translation(Vec.of(spacing, 0, 0)));
     //         }
   }
+
+  //    |   |   |   |   |
+  //    -----------------
+  //    |   |   |   |   |
+  //    -----------------
+  //    |   |   |   |   |
+
+  draw_fence(graphics_state, m, xcoord, ycoord, zcoord, degree, xdegree, ydegree, zdegree) {
+
+    //top horizontal bar
+    this.shapes.cylinder.draw(
+      graphics_state,
+      m.times(Mat4.translation(Vec.of(xcoord,ycoord+12,zcoord))
+        .times(Mat4.rotation(degree,Vec.of(xdegree, ydegree, zdegree)))
+        .times(Mat4.scale(Vec.of(1, 1, 50)))),
+      this.plastic.override({color: this.brick}));
+
+
+    //middle horizontal bar
+    this.shapes.cylinder.draw(
+      graphics_state,
+      m.times(Mat4.translation(Vec.of(xcoord,ycoord,zcoord))
+        .times(Mat4.rotation(degree,Vec.of(xdegree, ydegree, zdegree)))
+        .times(Mat4.scale(Vec.of(1, 1, 50)))),
+      this.plastic.override({color: this.brick}));
+
+    //bottom horizontal bar
+    this.shapes.cylinder.draw(
+      graphics_state,
+      m.times(Mat4.translation(Vec.of(xcoord,ycoord-12,zcoord))
+        .times(Mat4.rotation(1.571,Vec.of(0, 1, 0)))
+        .times(Mat4.scale(Vec.of(1, 1, 50)))),
+      this.plastic.override({color: this.brick}));
+
+
+    //1st vertical bar
+    this.shapes.cylinder.draw(
+      graphics_state,
+      m.times(Mat4.translation(Vec.of(xcoord-50,ycoord,zcoord))
+        .times(Mat4.rotation(1.571,Vec.of(1, 0, 0)))
+        .times(Mat4.scale(Vec.of(1, 1, 20)))),
+      this.plastic.override({color: this.brick}));
+
+
+    //last vertical bar
+    this.shapes.cylinder.draw(
+      graphics_state,
+      m.times(Mat4.translation(Vec.of(xcoord+50,ycoord,zcoord))
+        .times(Mat4.rotation(1.571,Vec.of(1, 0, 0)))
+        .times(Mat4.scale(Vec.of(1, 1, 20)))),
+      this.plastic.override({color: this.brick}));
+
+  }
+
+
   draw_cow(graphics_state, m) {
     this.draw_body(graphics_state, m);
 
