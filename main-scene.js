@@ -2,6 +2,7 @@ class Assignment_Two extends Scene_Component {
   // The scene begins by requesting the camera, shapes, and materials it will need.
   constructor(context, control_box) {
     super(context, control_box);
+
     // First, include a secondary Scene that provides movement controls:
     if (!context.globals.has_controls)
       context.register_scene_component(
@@ -118,11 +119,36 @@ class Assignment_Two extends Scene_Component {
     this.draw_cow(graphics_state, m);
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
     this.draw_barn(graphics_state, m);
+
+    this.draw_fence_enclosure(graphics_state, m);
+
+
+
+
+
+            m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
+
+    //Draw some demo textured shapes
+            let spacing = 6;
+            m = Mat4.translation(Vec.of(-1 * (spacing / 2) * (this.shape_count - 1), 0, 0));
+            for (let k in this.shapes) {
+                this.shapes[k].draw(
+                    graphics_state,
+                    m.times(Mat4.rotation(t, Vec.of(0, 1, 0))),
+                    this.shape_materials[k] || this.plastic);
+                m = m.times(Mat4.translation(Vec.of(spacing, 0, 0)));
+            }
   }
+
+
+
+
 }
+
 
 Object.assign(Assignment_Two.prototype, CowMixin);
 Object.assign(Assignment_Two.prototype, BarnMixin);
 Object.assign(Assignment_Two.prototype, CloudMixin);
+Object.assign(Assignment_Two.prototype, fenceMixin);
 
 window.Assignment_Two = window.classes.Assignment_Two = Assignment_Two;
