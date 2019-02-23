@@ -63,7 +63,7 @@ class Assignment_Two_Skeleton extends Scene_Component {
             });
         
         this.lights = [new Light(Vec.of(10, 10, 20, 1), Color.of(1, .4, 1, 1), 100000)];
-
+        this.yellow = Color.of(1, 1, 0, 1); 
         this.t = 0;
     }
 
@@ -73,6 +73,195 @@ class Assignment_Two_Skeleton extends Scene_Component {
         this.key_triggered_button("Pause Time", ["n"], () => {
             this.paused = !this.paused;
         });
+    }
+    draw_chicken(m, graphics_state, scale, xcoord, ycoord, zcoord) {
+
+        //Initial Body 
+        this.shapes.ball.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord, ycoord, zcoord)))
+            .times(Mat4.scale(Vec.of(scale, scale, scale))), 
+            this.clay.override({ color: Color.of(255, 255, 255, 10) })); 
+        //Head of chicken 
+        this.shapes.ball.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + (20 / (15 / scale)), ycoord, zcoord+(10 / (15 / scale)))))
+            .times(Mat4.scale(Vec.of(scale / 1.875, scale / 1.875, scale / 1.875))),
+            this.clay.override({ color: Color.of(255, 255, 255, 10) })); 
+        //Eye lid left 
+        this.shapes.circle.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 28 / (15 / scale), ycoord - 2 / (15 / scale), zcoord + 13 / (15 / scale))))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(1, 0, 0)))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(Vec.of(scale / 9.375 , scale / 9.375, scale /9.375))),
+            this.clay.override({ color: Color.of(0, 0, 0, 10) }));   
+        //Eye lid right
+        this.shapes.circle.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 28 / (15 / scale), ycoord + 2 / (15 / scale), zcoord + 13 / (15 / scale))))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(1, 0, 0)))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(Vec.of(scale / 9.375, scale / 9.375, scale / 9.375))),
+            this.clay.override({ color: Color.of(0, 0, 0, 10) })); 
+         //left eye   
+        this.shapes.circle.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 28.1 /(15 / scale), ycoord - 2 / (15 / scale), zcoord + 13 / (15 / scale))))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(1, 0, 0)))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(Vec.of(scale / 10.71428, scale / 10.71428, scale / 10.71428))),
+            this.clay.override({ color: Color.of(255, 255, 255, 10) }));
+        //right eye    
+        this.shapes.circle.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 28.1 / (15 / scale), ycoord + 2 / (15 / scale), zcoord + 13 / (15 / scale))))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(1, 0, 0)))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(Vec.of(scale / 10.71428, scale / 10.71428, scale / 10.71428))),
+            this.clay.override({ color: Color.of(255, 255, 255, 10) })); 
+        //left pupil
+        this.shapes.circle.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 28.2 / (15 / scale), ycoord - 2 / (15 / scale), zcoord + 13 / (15 / scale))))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(1, 0, 0)))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(Vec.of(scale / 30, scale / 30, scale / 30))),
+            this.clay.override({ color: Color.of(0, 0, 0, 10) }));
+        //right Pupil
+        this.shapes.circle.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 28.2 / (15 / scale), ycoord + 2 / (15 / scale), zcoord + 13 / (15 / scale))))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(1, 0, 0)))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(Vec.of(scale / 30, scale / 30,  scale / 30))),
+            this.clay.override({ color: Color.of(0, 0, 0, 10) })); 
+            
+        //beak
+        this.shapes.cone.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 28 / (15 / scale), ycoord, zcoord + 10 / (15 / scale))))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(scale / 11.538, scale /11.538, scale / 11.538)), 
+            this.clay.override({ color: Color.of(255, 255, 0, 1)}));
+
+        //Mouth area under beak
+        this.shapes.ball.draw(
+            graphics_state, 
+            m.times(Mat4.translation(Vec.of(xcoord + 27.5 / (15 / scale), ycoord - .5 /(15 / scale), zcoord + 5.7 / (15 / scale))))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
+            .times(Mat4.rotation(-Math.PI / 12, Vec.of(0, 0, 1)))
+            .times(Mat4.scale(Vec.of(scale / 7.5, scale / 30, scale / 30))),
+            this.clay.override({ color: Color.of(1, 0, 0, 1) })); 
+        this.shapes.ball.draw(
+            graphics_state, 
+            m.times(Mat4.translation(Vec.of(xcoord + 27.5 / (15 / scale), ycoord, zcoord + 5.7/ (15 / scale))))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(Vec.of(scale / 7.5, scale / 30, scale / 30))),
+            this.clay.override({ color: Color.of(1, 0, 0, 1) })); 
+        this.shapes.ball.draw(
+            graphics_state, 
+            m.times(Mat4.translation(Vec.of(xcoord + 27.5 / (15 / scale), ycoord + .5 / (15 / scale), zcoord + 5.7/ (15 / scale))))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
+            .times(Mat4.rotation(Math.PI / 12, Vec.of(0, 0, 1)))
+            .times(Mat4.scale(Vec.of(scale / 7.5, scale / 30, scale / 30))),
+            this.clay.override({ color: Color.of(1, 0, 0, 1) })); 
+        this.shapes.ball.draw(
+            graphics_state, 
+            m.times(Mat4.translation(Vec.of(xcoord + 27.5 / (15 / scale), ycoord + 1 / (15 / scale), zcoord + 6 / (15 / scale))))
+            .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
+            .times(Mat4.rotation(Math.PI / 8, Vec.of(0, 0, 1)))
+            .times(Mat4.scale(Vec.of(scale / 7.5, scale / 30, scale / 30))),
+            this.clay.override({ color: Color.of(1, 0, 0, 1) })); 
+
+
+        //Spikes on head
+        this.shapes.cone.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 25 / (15 / scale) , ycoord, zcoord + 16 / (15 / scale))))
+            .times(Mat4.rotation(Math.PI/4, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(Vec.of(scale / 11.5384, scale / 11.5384, scale / 7.5))),
+            this.clay.override({ color: Color.of(1, 0, 0, 1) })); 
+        
+        this.shapes.cone.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 23 / (15 / scale), ycoord, zcoord + 17.2 / (15 / scale))))
+            .times(Mat4.rotation(Math.PI/8, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(Vec.of(scale / 11.5384, scale / 11.5384, scale / 7.5))),
+            this.clay.override({ color: Color.of(1, 0, 0, 1) })); 
+        this.shapes.cone.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 20.5 / (15 / scale), ycoord, zcoord + 17.5 / (15 / scale))))
+            .times(Mat4.scale(Vec.of(scale / 11.5384, scale / 11.5384, scale / 7.5))),
+            this.clay.override({ color: Color.of(1, 0, 0, 1) })); 
+
+
+
+        //Legs
+        //Left large leg
+        this.shapes.box.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord, ycoord - 5 / (15 / scale), zcoord - 17 / (15 / scale))))
+            .times(Mat4.scale(Vec.of(scale / 15, scale / 15, scale / 2.5))),
+            this.clay.override({ color: Color.of(255, 255, 0, 1) }));
+
+        this.shapes.box.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord , ycoord-7.5 / (15 / scale), zcoord - 22 / (15 / scale))))
+            .times(Mat4.scale(Vec.of(scale / 15, scale / 10, scale / 15))),
+            this.clay.override({ color: Color.of(255, 255, 0, 1 )})); 
+          
+          this.shapes.box.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord, ycoord-2.5 / (15 / scale), zcoord - 22 / (15 / scale))))
+            .times(Mat4.scale(Vec.of(scale / 15, scale / 10, scale / 15))),
+            this.clay.override({ color: Color.of(255, 255, 0, 1)})); 
+          this.shapes.box.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 2.5 / (15/scale), ycoord-5 / (15 / scale), zcoord - 22 / (15 / scale))))
+            .times(Mat4.scale(Vec.of(scale / 10, scale / 15, scale  / 15))),
+            this.clay.override({ color: Color.of(255, 255, 0, 1)}));
+       this.shapes.box.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord, ycoord + 5 / (15 / scale), zcoord - 17 / (15 / scale))))
+            .times(Mat4.scale(Vec.of(scale / 15, scale / 15, scale / 2.5))),
+            this.clay.override({ color: Color.of(255, 255, 0, 1) }));
+
+        this.shapes.box.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord, ycoord+7.5 / (15 / scale), zcoord - 22 / (15 / scale))))
+            .times(Mat4.scale(Vec.of(scale / 15, scale / 10, scale / 15))),
+            this.clay.override({ color: Color.of(255, 255, 0, 1 )})); 
+          
+          this.shapes.box.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord, ycoord+2.5 / (15 / scale), zcoord - 22 / (15 / scale))))
+            .times(Mat4.scale(Vec.of(scale / 15, scale / 10, scale / 15))),
+            this.clay.override({ color: Color.of(255, 255, 0, 1)})); 
+          this.shapes.box.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord + 2.5 / (15 / scale), ycoord+5 / (15 / scale), zcoord - 22 / (15 / scale))))
+            .times(Mat4.scale(Vec.of(scale / 10, scale / 15, scale / 15))),
+            this.clay.override({ color: Color.of(255, 255, 0, 1)}));
+    
+        //Tail Feathers
+        this.shapes.ball.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord -13.5 / (15 / scale), ycoord-2 / (15 / scale), zcoord +15 / (15 / scale))))
+            .times(Mat4.scale(Vec.of(scale / 15, scale / 5, scale / 1.666667))),
+            this.clay.override({ color: Color.of(1, 0, 0, 1)})); 
+        this.shapes.ball.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord - 16 / (15 / scale), ycoord-2 / (15 / scale), zcoord + 14.9 / (15 / scale))))
+            .times(Mat4.rotation(-1*Math.PI/12, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(Vec.of(scale / 15, scale / 5, scale / 1.666667))),
+            this.clay.override({ color: Color.of(1, 0, 0, 1)})); 
+        this.shapes.ball.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(xcoord-18.5 / (15 / scale), ycoord-2 / (15 / scale), zcoord + 14.2 / (15 / scale))))
+            .times(Mat4.rotation(-1*Math.PI/6, Vec.of(0, 1, 0)))
+            .times(Mat4.scale(Vec.of(scale / 15, scale / 5, scale / 1.666667))),
+            this.clay.override({ color: Color.of(1, 0, 0, 1)}));
     }
     draw_cloud(m, graphics_state, scale, left_align) {
                 this.shapes.ball.draw(
@@ -111,11 +300,6 @@ class Assignment_Two_Skeleton extends Scene_Component {
             m.times(Mat4.translation(Vec.of(-3.125*scale + left_align, 0.625*scale, 3.75*scale)))
             .times(Mat4.scale(Vec.of(scale, scale, scale / 1.2))),
             this.clay.override({ color: Color.of(255, 255, 255, 1)})); 
-//         this.shapes.ball.draw(
-//             graphics_state,
-//             m.times(Mat4.translation(Vec.of(-50 + left_align, 5, 10)))
-//             .times(Mat4.scale(Vec.of(scale, scale, scale))),
-//             this.clay.override({ color: Color.of(255, 255, 255, 1)})); 
     }
     
     display(graphics_state) {
@@ -127,44 +311,10 @@ class Assignment_Two_Skeleton extends Scene_Component {
             this.t += graphics_state.animation_delta_time / 1000;
         const t = this.t;
         let m = Mat4.identity(); 
-       this.shapes.box.draw(
-            graphics_state,
-            m.times(Mat4.scale(Vec.of(40,40,.1))),
-            this.clay.override({color: Color.of(.5, .5, .5, 10)}));
-       this.draw_cloud(m, graphics_state, 8, 0);
-       this.draw_cloud(m, graphics_state, 3, 30); 
-              this.draw_cloud(m, graphics_state, 7, -50); 
 
-              this.draw_cloud(m, graphics_state, 5, 50); 
-              this.draw_cloud(m, graphics_state, 6.5, 25); 
-//        this.shapes.ball.draw(
-//             graphics_state,
-//             m.times(Mat4.translation(Vec.of(10, 5, 20)))
-//             .times(Mat4.scale(Vec.of(8, 8, 5))), 
-//             this.clay.override({ color: Color.of(255, 255, 255, 1)})); 
-//        this.shapes.ball.draw(
-//             graphics_state,
-//             m.times(Mat4.translation(Vec.of(10, 5, 20)))
-//             .times())
-//               this.draw_cloud(m, graphics_state, 8, 45);
 
-//        this.shapes.box.draw(
-//             graphics_state,
-//             m.times(Mat4.translation(Vec.of(-1*10, 0, -1*10)))
-//             .times(Mat4.rotation(Math.PI/2, Vec.of(0, 1, 0)))
-//             .times(Mat4.scale(Vec.of(10,10,.1))),
-//             this.clay.override({ color: Color.of(1, 1, 1, 10)})); 
-        window.color = Color.of(1, 0, 0, 10); 
-        // Draw some demo textured shapes
-//         let spacing = 6;
-//         m = Mat4.translation(Vec.of(-1 * (spacing / 2) * (this.shape_count - 1), 0, 0));
-//         for (let k in this.shapes) {
-//             this.shapes[k].draw(
-//                 graphics_state,
-//                 m.times(Mat4.rotation(t, Vec.of(0, 1, 0))),
-//                 this.shape_materials[k] || this.plastic);
-//             m = m.times(Mat4.translation(Vec.of(spacing, 0, 0)));
-//         }
+       this.draw_chicken(m, graphics_state, 15, 0, -20, 40); 
+
     }
 }
 
