@@ -1,8 +1,8 @@
-class Assignment_Two_Skeleton extends Scene_Component {
+class Assignment_Two extends Scene_Component {
   // The scene begins by requesting the camera, shapes, and materials it will need.
   constructor(context, control_box) {
     super(context, control_box);
-	//this is a git test == krish test
+
     // First, include a secondary Scene that provides movement controls:
     if (!context.globals.has_controls)
       context.register_scene_component(
@@ -106,30 +106,24 @@ class Assignment_Two_Skeleton extends Scene_Component {
     // Find how much time has passed in seconds, and use that to place shapes.
     if (!this.paused) this.t += graphics_state.animation_delta_time / 1000;
     const t = this.t;
+    window.color = Color.of(1, 0, 0, 10);
 
     let m = Mat4.identity();
+    this.draw_cloud(m, graphics_state, 8, 0, 50);
+    this.draw_cloud(m, graphics_state, 3, 30, 40);
+    this.draw_cloud(m, graphics_state, 7, -50, 45);
+    this.draw_cloud(m, graphics_state, 5, 50, 55);
+    this.draw_cloud(m, graphics_state, 6.5, 25, 54);
+    m = Mat4.identity();
 
-    // this.draw_cow(graphics_state, m);
+    this.draw_cow(graphics_state, m);
+    m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
     this.draw_barn(graphics_state, m);
 
-    for(var i = -600; i <= 600; i+=100){
-      this.draw_fence(graphics_state, m, i, 0, 650, 1.571, 0, 1, 0);
-    }
+    this.draw_fence_enclosure(graphics_state, m);
 
-    for(var i = -600; i <= 600; i+=100){
-      this.draw_fence(graphics_state, m, i, 0, -650, 1.571, 0, 1, 0);
-    }
-   
-     m = m.times(Mat4.rotation(1.57, Vec.of(0,1,0))); //move everything up 10 units
-    
-    for(var i = -600; i <= 600; i+=100){
-      this.draw_fence(graphics_state, m, i, 0, 650, 1.571, 0, 1, 0);
-    }
 
-    
-    for(var i = -600; i <= 600; i+=100){
-      this.draw_fence(graphics_state, m, i, 0, -650, 1.571, 0, 1, 0);
-    }
+
 
 
             m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
@@ -146,359 +140,15 @@ class Assignment_Two_Skeleton extends Scene_Component {
             }
   }
 
-  //    |   |   |   |   |
-  //    -----------------
-  //    |   |   |   |   |
-  //    -----------------
-  //    |   |   |   |   |
-
-  draw_fence(graphics_state, m, xcoord, ycoord, zcoord, degree, xdegree, ydegree, zdegree) {
-
-    //top horizontal bar
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m.times(Mat4.translation(Vec.of(xcoord,ycoord+12,zcoord))
-        .times(Mat4.rotation(degree,Vec.of(xdegree, ydegree, zdegree)))
-        .times(Mat4.scale(Vec.of(1, 1, 50)))),
-      this.plastic.override({color: this.brick}));
 
 
-    //middle horizontal bar
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m.times(Mat4.translation(Vec.of(xcoord,ycoord,zcoord))
-        .times(Mat4.rotation(degree,Vec.of(xdegree, ydegree, zdegree)))
-        .times(Mat4.scale(Vec.of(1, 1, 50)))),
-      this.plastic.override({color: this.brick}));
 
-    //bottom horizontal bar
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m.times(Mat4.translation(Vec.of(xcoord,ycoord-12,zcoord))
-        .times(Mat4.rotation(degree,Vec.of(0, 1, 0)))
-        .times(Mat4.scale(Vec.of(1, 1, 50)))),
-      this.plastic.override({color: this.brick}));
-
-
-    //1st vertical bar
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m.times(Mat4.translation(Vec.of(xcoord-50,ycoord,zcoord))
-        .times(Mat4.rotation(degree,Vec.of(1, 0, 0)))
-        .times(Mat4.scale(Vec.of(1, 1, 20)))),
-      this.plastic.override({color: this.brick}));
-
-
-    //last vertical bar
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m.times(Mat4.translation(Vec.of(xcoord+50,ycoord,zcoord))
-        .times(Mat4.rotation(degree,Vec.of(1, 0, 0)))
-        .times(Mat4.scale(Vec.of(1, 1, 20)))),
-      this.plastic.override({color: this.brick}));
-
-  }
-
-
-  draw_cow(graphics_state, m) {
-    this.draw_body(graphics_state, m);
-
-    this.draw_legs(graphics_state, m, 1, 1);
-    this.draw_legs(graphics_state, m, -1, 1);
-
-    this.draw_legs(graphics_state, m, 1, -1);
-    this.draw_legs(graphics_state, m, -1, -1);
-
-    this.draw_tail(graphics_state, m);
-
-    this.draw_head(graphics_state, m);
-  }
-
-  draw_body(graphics_state, m) {
-    this.shapes.cylinder.draw(
-      // main body
-      graphics_state,
-      m
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(0, 1, 0)))
-        .times(Mat4.scale(Vec.of(4, 4, 4))),
-      this.clay
-    );
-    this.shapes.ball.draw(
-      // front sphere
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-4, 0, 0)))
-        .times(Mat4.scale(Vec.of(3, 4, 4))),
-      this.clay
-    );
-    this.shapes.ball.draw(
-      // back sphere
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(4, 0, 0)))
-        .times(Mat4.scale(Vec.of(3, 4, 4))),
-      this.clay
-    );
-  }
-
-  draw_legs(graphics_state, m, side, fb) {
-    const deg =
-      -0.3 + Math.sin(side * 3.2 * this.t + (-Math.PI / 4) * fb * side);
-    m = m
-      .times(
-        Mat4.translation(Vec.of(fb * -4.3, -Math.sqrt(8), side * Math.sqrt(8)))
-      ) // move system to first joint connection
-      .times(Mat4.rotation(0.3 * deg, Vec.of(0, 0, 1)));
-    this.shapes.ball.draw(
-      // first joint
-      graphics_state,
-      m.times(Mat4.scale(1.3)),
-      this.clay
-    );
-    this.shapes.cylinder.draw(
-      // draw first leg section
-      graphics_state,
-      m
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
-        .times(Mat4.translation(Vec.of(0, 0, 1.3)))
-        .times(Mat4.scale(1.3)),
-      this.clay
-    );
-    m = m
-      .times(Mat4.translation(Vec.of(0, -2.6, 0))) // move system to second leg joint
-      .times(Mat4.rotation(-0.4 * deg, Vec.of(0, 0, 1)));
-    this.shapes.ball.draw(graphics_state, m.times(Mat4.scale(1.3)), this.clay);
-    this.shapes.cylinder.draw(
-      // draw second leg section
-      graphics_state,
-      m
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
-        .times(Mat4.translation(Vec.of(0, 0, 1.3)))
-        .times(Mat4.scale(Vec.of(1.3, 1.3, 1.3))),
-      this.clay
-    );
-    m = m
-      .times(Mat4.translation(Vec.of(0, -2.6, 0))) // move to third joint
-      .times(Mat4.rotation(0.1 * deg, Vec.of(0, 0, 1)));
-    this.shapes.ball.draw(graphics_state, m.times(Mat4.scale(1.3)), this.clay);
-    this.shapes.box.draw(
-      // draw foot
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(0, -0.75, 0)))
-        .times(Mat4.scale(Vec.of(1.3, 0.8, 1.3))),
-      this.clay
-    );
-  }
-
-  draw_tail(graphics_state, m) {
-    const deg = Math.sin(this.t);
-    let sign = Math.sign(deg);
-    m = m
-      .times(Mat4.translation(Vec.of(4, 0, 0))) // translate to middle of ellipsoid
-      .times(Mat4.rotation(-Math.PI / 4, Vec.of(0, 0, 1))) // rotate
-      .times(Mat4.translation(Vec.of(-1, 0.15 + Math.sqrt(25 / 2), 0))); // translate to edge of ellipsoid
-    this.shapes.box.draw(
-      // first box
-      graphics_state,
-      m.times(Mat4.scale(0.15)),
-      this.clay
-    );
-    for (let i = 0; i < 30; i++) {
-      if (i < 9) {
-        m = m
-          .times(Mat4.translation(Vec.of(0.15, 0.15, sign * 0.15))) // translate axis of rotation
-          .times(Mat4.rotation((-3 * (Math.PI / 4)) / 9, Vec.of(0, 0, 1))) // apply tail curve rotation
-          .times(Mat4.rotation(0.01 * deg, Vec.of(1, 0, 0))) // apply swinging rotation
-          .times(Mat4.translation(Vec.of(-0.15, 0.15, sign * -0.15))); // translate back
-      } else {
-        m = m
-          .times(Mat4.translation(Vec.of(0, 0.15, sign * 0.15)))
-          .times(Mat4.rotation(0.1 * deg, Vec.of(1, 0, 0)))
-          .times(Mat4.translation(Vec.of(0, 0.15, sign * -0.15)));
-      }
-      this.shapes.box.draw(
-        graphics_state,
-        m.times(Mat4.scale(0.15)),
-        this.clay
-      );
-    }
-  }
-
-  draw_head(graphics_state, m) {
-    m = m
-      .times(Mat4.rotation(-Math.PI / 2, Vec.of(0, 1, 0)))
-      .times(Mat4.translation(Vec.of(0, 0, 4)))
-      .times(Mat4.rotation(-Math.PI / 4, Vec.of(1, 0, 0)))
-      .times(Mat4.translation(Vec.of(0, 0, Math.sqrt(25 / 2))));
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m.times(Mat4.scale(Vec.of(1.5, 1.5, 1))),
-      this.clay
-    );
-    m = m.times(Mat4.translation(Vec.of(0, -0.8, 2.2)));
-    this.shapes.ball.draw(
-      graphics_state,
-      m
-        .times(Mat4.scale(Vec.of(3, 4, 2.5)))
-        .times(Mat4.rotation(-Math.PI / 4, Vec.of(1, 0, 0))),
-      this.clay
-    );
-    this.shapes.ball.draw(
-      graphics_state,
-      m
-        .times(Mat4.scale(Vec.of(1.7, 0.8, 0.3)))
-        .times(Mat4.translation(Vec.of(-2.4, 1.4, 0))),
-      this.clay
-    );
-    this.shapes.ball.draw(
-      graphics_state,
-      m
-        .times(Mat4.scale(Vec.of(1.7, 0.8, 0.3)))
-        .times(Mat4.translation(Vec.of(2.4, 1.4, 0))),
-      this.clay
-    );
-  }
-
-  draw_barn(graphics_state, m) {
-    this.draw_barn_walls(graphics_state, m);
-    this.draw_barn_roof(graphics_state, m);
-  }
-
-  draw_barn_walls(graphics_state, m) {
-    const barn_length = 20;
-    const barn_width = 1;
-    m = m.times(Mat4.rotation(Math.PI / 2, Vec.of(0, -1, 0)));
-    this.shapes.box.draw(
-      graphics_state,
-      m.times(Mat4.scale(Vec.of(barn_length, barn_length, barn_width))),
-      this.plastic.override({
-        color: this.brick
-      })
-    );
-    m = m
-      .times(Mat4.translation(Vec.of(-barn_length, 0, 0)))
-      .times(Mat4.rotation(Math.PI / 2, Vec.of(0, 1, 0)))
-      .times(Mat4.translation(Vec.of(barn_length - barn_width, 0, 0)));
-    this.shapes.box.draw(
-      graphics_state,
-      m.times(Mat4.scale(Vec.of(barn_length, barn_length, barn_width))),
-      this.plastic.override({
-        color: this.brick
-      })
-    );
-    m = m
-      .times(Mat4.translation(Vec.of(barn_length, 0, 0)))
-      .times(Mat4.rotation(Math.PI / 2, Vec.of(0, 1, 0)))
-      .times(Mat4.translation(Vec.of(-(barn_length - barn_width), 0, 0)));
-    this.shapes.box.draw(
-      graphics_state,
-      m.times(Mat4.scale(Vec.of(barn_length, barn_length, barn_width))),
-      this.plastic.override({
-        color: this.brick
-      })
-    );
-    m = m
-      .times(Mat4.translation(Vec.of(-barn_length, 0, 0)))
-      .times(Mat4.rotation(Math.PI / 2, Vec.of(0, 1, 0)))
-      .times(
-        Mat4.translation(
-          Vec.of((barn_length - barn_width) / 4 - (3 * barn_width) / 4, 0, 0)
-        )
-      );
-    this.shapes.box.draw(
-      graphics_state,
-      m.times(Mat4.scale(Vec.of(barn_length / 4, barn_length, barn_width))),
-      this.plastic.override({
-        color: this.brick
-      })
-    );
-    m = m.times(Mat4.translation(Vec.of((3 * barn_length) / 2, 0, 0)));
-    this.shapes.box.draw(
-      graphics_state,
-      m.times(Mat4.scale(Vec.of(barn_length / 4, barn_length, barn_width))),
-      this.plastic.override({
-        color: this.brick
-      })
-    );
-  }
-
-  draw_barn_roof(graphics_state, m) {
-    const barn_length = 20;
-    const barn_width = 1;
-    const barn_roof_length = barn_length / Math.sqrt(2) + barn_width;
-    // m = m.times(Mat4.rotation(Math.PI / 2, Vec.of(0, -1, 0)));
-
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(0, -1, 0)))
-        .times(Mat4.translation(Vec.of(0, 30, -10)))
-        .times(Mat4.rotation(-Math.PI / 4, Vec.of(1, 0, 0)))
-        .times(
-          Mat4.scale(Vec.of(barn_length + 4, barn_roof_length, barn_width))
-        ),
-      this.plastic.override({
-        color: this.brick
-      })
-    );
-
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.rotation(-Math.PI / 2, Vec.of(0, -1, 0)))
-        .times(Mat4.translation(Vec.of(0, 30, 2 * barn_length - 10)))
-        .times(Mat4.rotation(-Math.PI / 4, Vec.of(1, 0, 0)))
-        .times(
-          Mat4.scale(Vec.of(barn_length + 4, barn_roof_length, barn_width))
-        ),
-      this.plastic.override({
-        color: this.brick
-      })
-    );
-
-    this.shapes.triangular_prism.draw(
-      graphics_state,
-      m
-        .times(
-          Mat4.translation(
-            Vec.of(
-              barn_length,
-              barn_length + barn_length / Math.sqrt(2) + 5,
-              barn_length - barn_width
-            )
-          )
-        )
-        .times(Mat4.rotation((-3 * Math.PI) / 4, Vec.of(0, 0, 1)))
-        .times(
-          Mat4.scale(Vec.of(barn_length + 8, barn_length + 8, barn_width))
-        ),
-      this.plastic.override({
-        color: this.brick
-      })
-    );
-
-    this.shapes.triangular_prism.draw(
-      graphics_state,
-      m
-        .times(
-          Mat4.translation(
-            Vec.of(
-              barn_length,
-              barn_length + barn_length / Math.sqrt(2) + 5,
-              -barn_length - barn_width / Math.sqrt(2)
-            )
-          )
-        )
-        .times(Mat4.rotation((-3 * Math.PI) / 4, Vec.of(0, 0, 1)))
-        .times(
-          Mat4.scale(Vec.of(barn_length + 8, barn_length + 8, barn_width))
-        ),
-      this.plastic.override({
-        color: this.brick
-      })
-    );
-  }
 }
 
-window.Assignment_Two_Skeleton = window.classes.Assignment_Two_Skeleton = Assignment_Two_Skeleton;
+
+Object.assign(Assignment_Two.prototype, CowMixin);
+Object.assign(Assignment_Two.prototype, BarnMixin);
+Object.assign(Assignment_Two.prototype, CloudMixin);
+Object.assign(Assignment_Two.prototype, fenceMixin);
+
+window.Assignment_Two = window.classes.Assignment_Two = Assignment_Two;
