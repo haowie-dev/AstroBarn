@@ -30,3 +30,5 @@ Ex.
 ```javascript
 Object.assign(Assignment_Two.prototype, ThingyMixin);
 ```
+
+5. Now use your thingy methods defined in the mixin file in the scene display() to draw
