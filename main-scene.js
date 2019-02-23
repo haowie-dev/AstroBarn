@@ -87,74 +87,108 @@ class Assignment_Two extends Scene_Component {
     this.lights = [
       new Light(Vec.of(10, 10, 20, 1), Color.of(1, 0.4, 1, 1), 100000)
     ];
+  }
 
-    // Draw the scene's buttons, setup their actions and keyboard shortcuts, and monitor live measurements.
-    make_control_panel() {
-        this.key_triggered_button("Pause Time", ["n"], () => {
-            this.paused = !this.paused;
-        });
-    }
-    draw_cloud(m, graphics_state, scale, left_align) {
-                this.shapes.ball.draw(
-            graphics_state,
-            m.times(Mat4.translation(Vec.of(scale * -4 + left_align, 0, 3.75*scale)))
-            .times(Mat4.scale(Vec.of(scale, scale, scale/1.1))),
-            this.clay.override({ color: Color.of(255, 255, 255, 1)})); 
-        this.shapes.ball.draw(
-            graphics_state,
-            m.times(Mat4.translation(Vec.of(-1 * scale + left_align, 0, 4*scale)))
-            .times(Mat4.scale(Vec.of(scale, scale, scale / 1.2))),
-            this.clay.override({ color: Color.of(255, 255, 255, 1)})); 
-        this.shapes.ball.draw(
-            graphics_state,
-            m.times(Mat4.translation(Vec.of(-2 * scale + left_align, scale, 3.91*scale)))
-            .times(Mat4.scale(Vec.of(scale, scale, scale))),
-            this.clay.override({ color: Color.of(255, 255, 255, 1)}));  
-        this.shapes.ball.draw(
-            graphics_state,
-            m.times(Mat4.translation(Vec.of(scale * -2 + left_align, 0.625*scale, 4.53*scale)))
-            .times(Mat4.scale(Vec.of(scale, scale, scale / 1.5))),
-            this.clay.override({ color: Color.of(255, 255, 255, 1)})); 
-        this.shapes.ball.draw(
-            graphics_state,
-            m.times(Mat4.translation(Vec.of(-2.5 * scale + left_align, 0.625*scale, 3.75*scale)))
-            .times(Mat4.scale(Vec.of(scale, scale, scale))),
-            this.clay.override({ color: Color.of(255, 255, 255, 1)})); 
-        this.shapes.ball.draw(
-            graphics_state,
-            m.times(Mat4.translation(Vec.of(-3.25*scale + left_align, 0.625*scale, 4.75*scale)))
-            .times(Mat4.scale(Vec.of(scale, scale, scale/1.2))),
-            this.clay.override({ color: Color.of(255, 255, 255, 1)})); 
+  // Draw the scene's buttons, setup their actions and keyboard shortcuts, and monitor live measurements.
+  make_control_panel() {
+    this.key_triggered_button("Pause Time", ["n"], () => {
+      this.paused = !this.paused;
+    });
+  }
+  draw_cloud(m, graphics_state, scale, left_align) {
+    this.shapes.ball.draw(
+      graphics_state,
+      m
+        .times(
+          Mat4.translation(Vec.of(scale * -4 + left_align, 0, 3.75 * scale))
+        )
+        .times(Mat4.scale(Vec.of(scale, scale, scale / 1.1))),
+      this.clay.override({ color: Color.of(255, 255, 255, 1) })
+    );
+    this.shapes.ball.draw(
+      graphics_state,
+      m
+        .times(Mat4.translation(Vec.of(-1 * scale + left_align, 0, 4 * scale)))
+        .times(Mat4.scale(Vec.of(scale, scale, scale / 1.2))),
+      this.clay.override({ color: Color.of(255, 255, 255, 1) })
+    );
+    this.shapes.ball.draw(
+      graphics_state,
+      m
+        .times(
+          Mat4.translation(Vec.of(-2 * scale + left_align, scale, 3.91 * scale))
+        )
+        .times(Mat4.scale(Vec.of(scale, scale, scale))),
+      this.clay.override({ color: Color.of(255, 255, 255, 1) })
+    );
+    this.shapes.ball.draw(
+      graphics_state,
+      m
+        .times(
+          Mat4.translation(
+            Vec.of(scale * -2 + left_align, 0.625 * scale, 4.53 * scale)
+          )
+        )
+        .times(Mat4.scale(Vec.of(scale, scale, scale / 1.5))),
+      this.clay.override({ color: Color.of(255, 255, 255, 1) })
+    );
+    this.shapes.ball.draw(
+      graphics_state,
+      m
+        .times(
+          Mat4.translation(
+            Vec.of(-2.5 * scale + left_align, 0.625 * scale, 3.75 * scale)
+          )
+        )
+        .times(Mat4.scale(Vec.of(scale, scale, scale))),
+      this.clay.override({ color: Color.of(255, 255, 255, 1) })
+    );
+    this.shapes.ball.draw(
+      graphics_state,
+      m
+        .times(
+          Mat4.translation(
+            Vec.of(-3.25 * scale + left_align, 0.625 * scale, 4.75 * scale)
+          )
+        )
+        .times(Mat4.scale(Vec.of(scale, scale, scale / 1.2))),
+      this.clay.override({ color: Color.of(255, 255, 255, 1) })
+    );
 
-        this.shapes.ball.draw(
-            graphics_state,
-            m.times(Mat4.translation(Vec.of(-3.125*scale + left_align, 0.625*scale, 3.75*scale)))
-            .times(Mat4.scale(Vec.of(scale, scale, scale / 1.2))),
-            this.clay.override({ color: Color.of(255, 255, 255, 1)})); 
-    }
-    
-    display(graphics_state) {
-        // Use the lights stored in this.lights.
-        graphics_state.lights = this.lights;
-                
-        // Find how much time has passed in seconds, and use that to place shapes.
-        if (!this.paused)
-            this.t += graphics_state.animation_delta_time / 1000;
-        const t = this.t;
-        let m = Mat4.identity(); 
-        this.shapes.box.draw(
-            graphics_state,
-            m.times(Mat4.scale(Vec.of(40,40,.1))),
-            this.clay.override({color: Color.of(.5, .5, .5, 10)}));
-        this.draw_cloud(m, graphics_state, 8, 0);
-        this.draw_cloud(m, graphics_state, 3, 30); 
-              this.draw_cloud(m, graphics_state, 7, -50); 
+    this.shapes.ball.draw(
+      graphics_state,
+      m
+        .times(
+          Mat4.translation(
+            Vec.of(-3.125 * scale + left_align, 0.625 * scale, 3.75 * scale)
+          )
+        )
+        .times(Mat4.scale(Vec.of(scale, scale, scale / 1.2))),
+      this.clay.override({ color: Color.of(255, 255, 255, 1) })
+    );
+  }
 
-              this.draw_cloud(m, graphics_state, 5, 50); 
-              this.draw_cloud(m, graphics_state, 6.5, 25); 
-        window.color = Color.of(1, 0, 0, 10); 
-    }
+  display(graphics_state) {
+    // Use the lights stored in this.lights.
+    graphics_state.lights = this.lights;
+
+    // Find how much time has passed in seconds, and use that to place shapes.
+    if (!this.paused) this.t += graphics_state.animation_delta_time / 1000;
+    const t = this.t;
     let m = Mat4.identity();
+    this.shapes.box.draw(
+      graphics_state,
+      m.times(Mat4.scale(Vec.of(40, 40, 0.1))),
+      this.clay.override({ color: Color.of(0.5, 0.5, 0.5, 10) })
+    );
+    this.draw_cloud(m, graphics_state, 8, 0);
+    this.draw_cloud(m, graphics_state, 3, 30);
+    this.draw_cloud(m, graphics_state, 7, -50);
+
+    this.draw_cloud(m, graphics_state, 5, 50);
+    this.draw_cloud(m, graphics_state, 6.5, 25);
+    window.color = Color.of(1, 0, 0, 10);
+    m = Mat4.identity();
     this.draw_cow(graphics_state, m);
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
     this.draw_barn(graphics_state, m);
