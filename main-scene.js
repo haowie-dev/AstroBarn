@@ -112,51 +112,38 @@ class Assignment_Two_Skeleton extends Scene_Component {
     // this.draw_cow(graphics_state, m);
     this.draw_barn(graphics_state, m);
 
+    for(var i = -600; i <= 600; i+=100){
+      this.draw_fence(graphics_state, m, i, 0, 650, 1.571, 0, 1, 0);
+    }
 
-    this.draw_fence(graphics_state, m, 600, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 500, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 400, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 300, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 200, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 100, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 0, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -100, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -200, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -300, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -400, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -500, 0, 300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -600, 0, 300, 1.571, 0, 1, 0);
+    for(var i = -600; i <= 600; i+=100){
+      this.draw_fence(graphics_state, m, i, 0, -650, 1.571, 0, 1, 0);
+    }
+   
+     m = m.times(Mat4.rotation(1.57, Vec.of(0,1,0))); //move everything up 10 units
+    
+    for(var i = -600; i <= 600; i+=100){
+      this.draw_fence(graphics_state, m, i, 0, 650, 1.571, 0, 1, 0);
+    }
 
-
-
-    this.draw_fence(graphics_state, m, 600, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 500, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 400, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 300, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 200, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 100, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, 0, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -100, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -200, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -300, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -400, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -500, 0, -300, 1.571, 0, 1, 0);
-    this.draw_fence(graphics_state, m, -600, 0, -300, 1.571, 0, 1, 0);
+    
+    for(var i = -600; i <= 600; i+=100){
+      this.draw_fence(graphics_state, m, i, 0, -650, 1.571, 0, 1, 0);
+    }
 
 
+            m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
 
-    //         m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
-
-    // Draw some demo textured shapes
-    //         let spacing = 6;
-    //         let m = Mat4.translation(Vec.of(-1 * (spacing / 2) * (this.shape_count - 1), 0, 0));
-    //         for (let k in this.shapes) {
-    //             this.shapes[k].draw(
-    //                 graphics_state,
-    //                 m.times(Mat4.rotation(t, Vec.of(0, 1, 0))),
-    //                 this.shape_materials[k] || this.plastic);
-    //             m = m.times(Mat4.translation(Vec.of(spacing, 0, 0)));
-    //         }
+    //Draw some demo textured shapes
+            let spacing = 6;
+            m = Mat4.translation(Vec.of(-1 * (spacing / 2) * (this.shape_count - 1), 0, 0));
+            for (let k in this.shapes) {
+                this.shapes[k].draw(
+                    graphics_state,
+                    m.times(Mat4.rotation(t, Vec.of(0, 1, 0))),
+                    this.shape_materials[k] || this.plastic);
+                m = m.times(Mat4.translation(Vec.of(spacing, 0, 0)));
+            }
   }
 
   //    |   |   |   |   |
@@ -188,7 +175,7 @@ class Assignment_Two_Skeleton extends Scene_Component {
     this.shapes.cylinder.draw(
       graphics_state,
       m.times(Mat4.translation(Vec.of(xcoord,ycoord-12,zcoord))
-        .times(Mat4.rotation(1.571,Vec.of(0, 1, 0)))
+        .times(Mat4.rotation(degree,Vec.of(0, 1, 0)))
         .times(Mat4.scale(Vec.of(1, 1, 50)))),
       this.plastic.override({color: this.brick}));
 
@@ -197,7 +184,7 @@ class Assignment_Two_Skeleton extends Scene_Component {
     this.shapes.cylinder.draw(
       graphics_state,
       m.times(Mat4.translation(Vec.of(xcoord-50,ycoord,zcoord))
-        .times(Mat4.rotation(1.571,Vec.of(1, 0, 0)))
+        .times(Mat4.rotation(degree,Vec.of(1, 0, 0)))
         .times(Mat4.scale(Vec.of(1, 1, 20)))),
       this.plastic.override({color: this.brick}));
 
@@ -206,7 +193,7 @@ class Assignment_Two_Skeleton extends Scene_Component {
     this.shapes.cylinder.draw(
       graphics_state,
       m.times(Mat4.translation(Vec.of(xcoord+50,ycoord,zcoord))
-        .times(Mat4.rotation(1.571,Vec.of(1, 0, 0)))
+        .times(Mat4.rotation(degree,Vec.of(1, 0, 0)))
         .times(Mat4.scale(Vec.of(1, 1, 20)))),
       this.plastic.override({color: this.brick}));
 
