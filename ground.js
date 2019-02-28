@@ -3,8 +3,6 @@
 //	> TODO: random spots of grass that are growing in patches in dirt
 
 let groundMixin = {
-
-
 	draw_floor(graphics_state, m){
 		//top horizontal bar
 	    this.shapes.square.draw(
