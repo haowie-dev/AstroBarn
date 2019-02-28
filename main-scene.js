@@ -65,8 +65,8 @@ class Assignment_Two extends Scene_Component {
     // colors
     this.blue = Color.of(0, 0, 1, 1);
     this.yellow = Color.of(1, 1, 0, 1);
-    this.brown = Color.of(165 / 255, 42 / 255, 42 / 255, 1);
     this.brick = Color.of(178 / 255, 34 / 255, 34 / 255, 1);
+    this.ground_color = Color.of(148 / 255, 114 / 255, 79 / 255, 1);
 
     // Load some textures for the demo shapes
     this.shape_materials = {};
@@ -109,6 +109,8 @@ class Assignment_Two extends Scene_Component {
     window.color = Color.of(1, 0, 0, 10);
 
     let m = Mat4.identity();
+    this.draw_floor(graphics_state, m)
+
     this.draw_cloud(m, graphics_state, 8, 0, 50);
     this.draw_cloud(m, graphics_state, 3, 30, 40);
     this.draw_cloud(m, graphics_state, 7, -50, 45);
@@ -139,6 +141,7 @@ class Assignment_Two extends Scene_Component {
 Object.assign(Assignment_Two.prototype, CowMixin);
 Object.assign(Assignment_Two.prototype, BarnMixin);
 Object.assign(Assignment_Two.prototype, CloudMixin);
+Object.assign(Assignment_Two.prototype, groundMixin);
 Object.assign(Assignment_Two.prototype, FenceMixin);
 
 window.Assignment_Two = window.classes.Assignment_Two = Assignment_Two;
