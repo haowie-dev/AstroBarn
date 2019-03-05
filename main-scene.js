@@ -67,6 +67,7 @@ class Assignment_Two extends Scene_Component {
     this.yellow = Color.of(1, 1, 0, 1);
     this.brick = Color.of(178 / 255, 34 / 255, 34 / 255, 1);
     this.ground_color = Color.of(148 / 255, 114 / 255, 79 / 255, 1);
+    this.green = Color.of(0, 1, 0, 1);
 
     // Load some textures for the demo shapes
     this.shape_materials = {};
@@ -110,6 +111,9 @@ class Assignment_Two extends Scene_Component {
 
     let m = Mat4.identity();
     this.draw_floor(graphics_state, m)
+    this.cover_farm_with_grass_patches(graphics_state, m)
+
+    this.cover_farm_firewood(graphics_state, m, 200, 100)
 
     this.draw_cloud(m, graphics_state, 8, 0, 50);
     this.draw_cloud(m, graphics_state, 3, 30, 40);
