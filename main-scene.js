@@ -92,8 +92,8 @@ class Assignment_Two extends Scene_Component {
     // colors
     this.blue = Color.of(0, 0, 1, 1);
     this.yellow = Color.of(1, 1, 0, 1);
-    this.brown = Color.of(165 / 255, 42 / 255, 42 / 255, 1);
     this.brick = Color.of(178 / 255, 34 / 255, 34 / 255, 1);
+    this.ground_color = Color.of(148 / 255, 114 / 255, 79 / 255, 1);
 
     // Load some textures for the demo shapes
     this.shape_materials = {};
@@ -158,17 +158,16 @@ class Assignment_Two extends Scene_Component {
     window.color = Color.of(1, 0, 0, 10);
 
     let m = Mat4.identity();
+    this.draw_floor(graphics_state, m)
+
     this.draw_cloud(m, graphics_state, 8, 0, 50);
     this.draw_cloud(m, graphics_state, 3, 30, 40);
     this.draw_cloud(m, graphics_state, 7, -50, 45);
     this.draw_cloud(m, graphics_state, 5, 50, 55);
     this.draw_cloud(m, graphics_state, 6.5, 25, 54);
-    m = Mat4.identity();
-
     this.draw_cow(graphics_state, m);
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
     this.draw_barn(graphics_state, m);
-
     this.draw_fence_enclosure(graphics_state, m);
      for (var i = 0; i < this.array.length; i++) {
        for (var j = i+1; j < this.array.length; j++) {
@@ -184,12 +183,30 @@ class Assignment_Two extends Scene_Component {
      }
   }
 
-}
+    m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
 
+    //Draw some demo textured shapes
+    // let spacing = 6;
+    // m = Mat4.translation(
+    //   Vec.of(-1 * (spacing / 2) * (this.shape_count - 1), 0, 0)
+    // );
+    // for (let k in this.shapes) {
+    //   this.shapes[k].draw(
+    //     graphics_state,
+    //     m.times(Mat4.rotation(t, Vec.of(0, 1, 0))),
+    //     this.shape_materials[k] || this.plastic
+    //   );
+    //   m = m.times(Mat4.translation(Vec.of(spacing, 0, 0)));
+    // }
+  }
+}
 
 Object.assign(Assignment_Two.prototype, CowMixin);
 Object.assign(Assignment_Two.prototype, BarnMixin);
 Object.assign(Assignment_Two.prototype, CloudMixin);
 Object.assign(Assignment_Two.prototype, fenceMixin);
 Object.assign(Assignment_Two.prototype, ChickenMixin); 
+Object.assign(Assignment_Two.prototype, groundMixin);
+Object.assign(Assignment_Two.prototype, FenceMixin);
+
 window.Assignment_Two = window.classes.Assignment_Two = Assignment_Two;
