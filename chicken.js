@@ -1,6 +1,5 @@
 let ChickenMixin = {
 draw_chicken(m, graphics_state, scale, xcoord, ycoord, zcoord) {
-        m = m.times(Mat4.translation(Vec.of(Math.sin(this.t), 0, 0)));
         //Initial Body 
         this.shapes.ball.draw(
             graphics_state,

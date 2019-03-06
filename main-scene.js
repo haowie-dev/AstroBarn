@@ -1,3 +1,30 @@
+class shape_chicken_pos {
+  constructor(x, y, z) {
+    this.x_pos = x;
+    this.y_pos = y;
+    this.z_pos = z;
+  }
+  detect_collision(t, other_shape) {
+      var ball_1_x = this.x_pos(t);
+      var ball_1_y = this.y_pos(t);
+      var ball_1_z = this.z_pos(t);
+      var ball_2_x = other_shape.x_pos(t);
+      var ball_2_y = other_shape.y_pos(t);
+      var ball_2_z = other_shape.z_pos(t);
+      var dist = (ball_1_x - ball_2_x) * (ball_1_x - ball_2_x) + (ball_1_y - ball_2_y) * (ball_1_x - ball_2_x) + (ball_1_z - ball_2_z) * (ball_1_z - ball_2_z);
+      console.log(dist);
+      if (dist < 2000) {
+          return true;
+      }
+      return false; 
+  }
+  draw(scene, m, graphics_state, t) {
+      m = m.times(Mat4.translation(Vec.of(this.x_pos(t), this.y_pos(t), this.z_pos(t))));
+      scene.draw_chicken(m, graphics_state, 15, 0, -20, 40);
+  }
+}
+
+
 class Assignment_Two extends Scene_Component {
   // The scene begins by requesting the camera, shapes, and materials it will need.
   constructor(context, control_box) {
@@ -90,6 +117,28 @@ class Assignment_Two extends Scene_Component {
     ];
 
     this.t = 0;
+    var x_func = function(t) {
+        return Math.sin(10*t) +15;
+    }
+    var y_func = function(t) {
+      return 5 * Math.sin(2*t);
+    }
+    var z_func = function(t) {
+      return -50;
+    }
+    var x_2_func = function(t) {
+      return Math.sin(t) * 10 -40;
+    }
+    var y_2_func = function(t) {
+      return 5 * Math.sin(2*t);
+    }
+    var z_2_func = function(t) {
+      return -50;
+    }
+    var first_chicken = new shape_chicken_pos(x_func, y_func, z_func);
+    var second_chicken = new shape_chicken_pos(x_2_func, y_2_func, z_2_func);
+    this.array = [first_chicken, second_chicken]; 
+
   }
 
   // Draw the scene's buttons, setup their actions and keyboard shortcuts, and monitor live measurements.
@@ -121,25 +170,18 @@ class Assignment_Two extends Scene_Component {
     this.draw_barn(graphics_state, m);
 
     this.draw_fence_enclosure(graphics_state, m);
-    m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(0, -50, 0)))
-    .times(Mat4.rotation(-1*Math.PI/2, Vec.of(1, 0, 0)));
-    this.draw_chicken(m, graphics_state, 15, 0, -20, 40);
-
-
-
-    m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
-
-    //Draw some demo textured shapes
-            let spacing = 6;
-            m = Mat4.translation(Vec.of(-1 * (spacing / 2) * (this.shape_count - 1), 0, 0));
-            for (let k in this.shapes) {
-                this.shapes[k].draw(
-                    graphics_state,
-                    m.times(Mat4.rotation(t, Vec.of(0, 1, 0))),
-                    this.shape_materials[k] || this.plastic);
-                m = m.times(Mat4.translation(Vec.of(spacing, 0, 0)));
-            }
+     for (var i = 0; i < this.array.length; i++) {
+       for (var j = i+1; j < this.array.length; j++) {
+         if (this.array[i].detect_collision(t, this.array[j])) {
+           this.array.splice(i, 1);
+         }
+       }
+     }
+     for (var i = 0; i < this.array.length; i++) {
+       m = Mat4.identity();
+       m = m.times(Mat4.rotation(-1*Math.PI/2, Vec.of(1, 0, 0))); 
+       this.array[i].draw(this, m, graphics_state, t);
+     }
   }
 
 }
