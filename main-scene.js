@@ -124,7 +124,7 @@ class Assignment_Two extends Scene_Component {
       return 5 * Math.sin(2*t);
     }
     var z_func = function(t) {
-      return -50;
+      return -35.7;
     }
     var x_2_func = function(t) {
       return Math.sin(t) * 10 -40;
@@ -133,7 +133,7 @@ class Assignment_Two extends Scene_Component {
       return 5 * Math.sin(2*t);
     }
     var z_2_func = function(t) {
-      return -50;
+      return -35.7;
     }
     var first_chicken = new shape_chicken_pos(x_func, y_func, z_func);
     var second_chicken = new shape_chicken_pos(x_2_func, y_2_func, z_2_func);
@@ -181,30 +181,13 @@ class Assignment_Two extends Scene_Component {
        m = m.times(Mat4.rotation(-1*Math.PI/2, Vec.of(1, 0, 0))); 
        this.array[i].draw(this, m, graphics_state, t);
      }
-  }
 
     m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
-
-    //Draw some demo textured shapes
-    // let spacing = 6;
-    // m = Mat4.translation(
-    //   Vec.of(-1 * (spacing / 2) * (this.shape_count - 1), 0, 0)
-    // );
-    // for (let k in this.shapes) {
-    //   this.shapes[k].draw(
-    //     graphics_state,
-    //     m.times(Mat4.rotation(t, Vec.of(0, 1, 0))),
-    //     this.shape_materials[k] || this.plastic
-    //   );
-    //   m = m.times(Mat4.translation(Vec.of(spacing, 0, 0)));
-    // }
   }
 }
-
 Object.assign(Assignment_Two.prototype, CowMixin);
 Object.assign(Assignment_Two.prototype, BarnMixin);
 Object.assign(Assignment_Two.prototype, CloudMixin);
-Object.assign(Assignment_Two.prototype, fenceMixin);
 Object.assign(Assignment_Two.prototype, ChickenMixin); 
 Object.assign(Assignment_Two.prototype, groundMixin);
 Object.assign(Assignment_Two.prototype, FenceMixin);
