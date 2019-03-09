@@ -99,7 +99,7 @@ class Assignment_Two extends Scene_Component {
     // Load some textures for the demo shapes
     this.shape_materials = {};
     const shape_textures = {
-      square: "assets/treebark.png"
+      square: "assets/dirt.png"
     };
     for (let t in shape_textures)
       this.shape_materials[t] = this.texture_base.override({
