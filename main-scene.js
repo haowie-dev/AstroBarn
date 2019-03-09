@@ -99,14 +99,7 @@ class Assignment_Two extends Scene_Component {
     // Load some textures for the demo shapes
     this.shape_materials = {};
     const shape_textures = {
-      square: "assets/butterfly.png",
-      box: "assets/even-dice-cubemap.png",
-      ball: "assets/soccer_sph_s_resize.png",
-      cylinder: "assets/treebark.png",
-      pyramid: "assets/tetrahedron-texture2.png",
-      simplebox: "assets/tetrahedron-texture2.png",
-      cone: "assets/hypnosis.jpg",
-      circle: "assets/hypnosis.jpg"
+      square: "assets/treebark.png"
     };
     for (let t in shape_textures)
       this.shape_materials[t] = this.texture_base.override({
@@ -159,10 +152,11 @@ class Assignment_Two extends Scene_Component {
     window.color = Color.of(1, 0, 0, 10);
 
     let m = Mat4.identity();
+
     this.draw_floor(graphics_state, m)
     this.cover_farm_with_grass_patches(graphics_state, m)
 
-    this.cover_farm_firewood(graphics_state, m, 200, 100)
+    this.cover_farm_firewood(graphics_state, m, 200, 150)
 
     this.draw_cloud(m, graphics_state, 8, 0, 50);
     this.draw_cloud(m, graphics_state, 3, 30, 40);
@@ -173,6 +167,9 @@ class Assignment_Two extends Scene_Component {
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
     this.draw_barn(graphics_state, m);
     this.draw_fence_enclosure(graphics_state, m);
+
+
+
      for (var i = 0; i < this.array.length; i++) {
        for (var j = i+1; j < this.array.length; j++) {
          if (this.array[i].detect_collision(t, this.array[j])) {

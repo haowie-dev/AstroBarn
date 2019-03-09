@@ -1,6 +1,4 @@
 //mixin for the ground. basic shape is there, need to add: 
-//	> TODO: add texture to dirt
-//	> TODO: random spots of grass that are growing in patches in dirt
 
 let groundMixin = {
 	draw_floor(graphics_state, m){
@@ -9,9 +7,10 @@ let groundMixin = {
 	      graphics_state,
 	      m.times(Mat4.translation(Vec.of(0,-20,0))
 	        .times(Mat4.rotation(3.14,Vec.of(0, 1, 1)))
-	        .times(Mat4.scale(Vec.of(600, 600, 0)))),
+	        .times(Mat4.scale(Vec.of(700, 700, 0)))),
 
-	      this.plastic.override({color: this.ground_color}));
+	      this.shape_materials["square"] || this.plastic);
+
 	},
 
 	draw_singular_grass(graphics_state, m, xcoord, ycoord, zcoord){
@@ -41,75 +40,60 @@ let groundMixin = {
 	draw_grass_patch(graphics_state, m, xcoord, zcoord){
 
 		m = m.times(Mat4.translation(Vec.of(xcoord, 0, zcoord)))
-		this.draw_singular_grass(graphics_state, m, 0, -19, 0)
-		this.draw_singular_grass(graphics_state, m, 0, -19, 4)
-		this.draw_singular_grass(graphics_state, m, 5, -19, 2)
-		this.draw_singular_grass(graphics_state, m, 5, -19, 36)	
-		this.draw_singular_grass(graphics_state, m, 7, -19, 26)	
-		this.draw_singular_grass(graphics_state, m, 25, -19, 12)		
-		this.draw_singular_grass(graphics_state, m, 15, -19, 42)
-		this.draw_singular_grass(graphics_state, m, 51, -19, 14)
 
-		this.draw_singular_grass(graphics_state, m, 10, -19, 30)
-		this.draw_singular_grass(graphics_state, m, 0, -19, -4)
-		this.draw_singular_grass(graphics_state, m, 5, -19, -2)
-		this.draw_singular_grass(graphics_state, m, 5, -19, -36)	
-		this.draw_singular_grass(graphics_state, m, 7, -19, -26)	
-		this.draw_singular_grass(graphics_state, m, 25, -19, -12)		
-		this.draw_singular_grass(graphics_state, m, 15, -19, -42)
-		this.draw_singular_grass(graphics_state, m, 51, -19, -14)
-
-		this.draw_singular_grass(graphics_state, m, -0, -19, -4)
-		this.draw_singular_grass(graphics_state, m, -5, -19, -2)
-		this.draw_singular_grass(graphics_state, m, -5, -19, -36)	
-		this.draw_singular_grass(graphics_state, m, -7, -19, -26)		
-		this.draw_singular_grass(graphics_state, m, -25, -19, -12)		
-		this.draw_singular_grass(graphics_state, m, -15, -19, -42)
-		this.draw_singular_grass(graphics_state, m, -51, -19, -14)
-
-		this.draw_singular_grass(graphics_state, m, -0, -19, 4)
-		this.draw_singular_grass(graphics_state, m, -5, -19, 2)
-		this.draw_singular_grass(graphics_state, m, -5, -19, 36)	
-		this.draw_singular_grass(graphics_state, m, -7, -19, 26)		
-		this.draw_singular_grass(graphics_state, m, -25, -19,12)		
-		this.draw_singular_grass(graphics_state, m, -15, -19,42)
-		this.draw_singular_grass(graphics_state, m, -51, -19,14)
+		// **** (+, +)
+		//xcoord
+		for(var i = 0; i < 60; i+=10){
+			this.draw_singular_grass(graphics_state, m, i, -19, 0)
+		}
+		//zcoord
+		for(var i = 0; i < 60; i+=10){
+			this.draw_singular_grass(graphics_state, m, 0, -19, i)
+		}
+		// **** (-, -)
+		//xcoord
+		for(var i = 0; i < 60; i+=10){
+			this.draw_singular_grass(graphics_state, m, -i, -19, 0)
+		}
+		//zcoord
+		for(var i = 0; i < 60; i+=10){
+			this.draw_singular_grass(graphics_state, m, 0, -19, -i)
+		}
 	},
 
 	cover_farm_with_grass_patches(graphics_state, m){
-			this.draw_grass_patch(graphics_state, m, 400, 214)
-			this.draw_grass_patch(graphics_state, m, 256, 298)
-			this.draw_grass_patch(graphics_state, m, 526, 231)
-			this.draw_grass_patch(graphics_state, m, 235, 324)
-			this.draw_grass_patch(graphics_state, m, 123, 42)
-			this.draw_grass_patch(graphics_state, m, 22, 532)
-			this.draw_grass_patch(graphics_state, m, 599, 425)
+		this.draw_grass_patch(graphics_state, m, 400, 214)
+		this.draw_grass_patch(graphics_state, m, 256, 298)
+		this.draw_grass_patch(graphics_state, m, 526, 231)
+		this.draw_grass_patch(graphics_state, m, 235, 324)
+		this.draw_grass_patch(graphics_state, m, 123, 42)
+		this.draw_grass_patch(graphics_state, m, 22, 532)
+		this.draw_grass_patch(graphics_state, m, 599, 425)
 
+		this.draw_grass_patch(graphics_state, m, -400, 214)
+		this.draw_grass_patch(graphics_state, m, -256, 298)
+		this.draw_grass_patch(graphics_state, m, -526, 231)
+		this.draw_grass_patch(graphics_state, m, -235, 324)
+		this.draw_grass_patch(graphics_state, m, -123, 42)
+		this.draw_grass_patch(graphics_state, m, -22, 532)
+		this.draw_grass_patch(graphics_state, m, -599, 425)
 
-			this.draw_grass_patch(graphics_state, m, -400, 214)
-			this.draw_grass_patch(graphics_state, m, -256, 298)
-			this.draw_grass_patch(graphics_state, m, -526, 231)
-			this.draw_grass_patch(graphics_state, m, -235, 324)
-			this.draw_grass_patch(graphics_state, m, -123, 42)
-			this.draw_grass_patch(graphics_state, m, -22, 532)
-			this.draw_grass_patch(graphics_state, m, -599, 425)
+		this.draw_grass_patch(graphics_state, m, 400, -214)
+		this.draw_grass_patch(graphics_state, m, 256, -298)
+		this.draw_grass_patch(graphics_state, m, 526, -231)
+		this.draw_grass_patch(graphics_state, m, 235, -324)
+		this.draw_grass_patch(graphics_state, m, 123, -42)
+		this.draw_grass_patch(graphics_state, m, 22, -532)
+		this.draw_grass_patch(graphics_state, m, 599, -425)
 
-			this.draw_grass_patch(graphics_state, m, 400, -214)
-			this.draw_grass_patch(graphics_state, m, 256, -298)
-			this.draw_grass_patch(graphics_state, m, 526, -231)
-			this.draw_grass_patch(graphics_state, m, 235, -324)
-			this.draw_grass_patch(graphics_state, m, 123, -42)
-			this.draw_grass_patch(graphics_state, m, 22, -532)
-			this.draw_grass_patch(graphics_state, m, 599, -425)
-
-			this.draw_grass_patch(graphics_state, m, -400, -214)
-			this.draw_grass_patch(graphics_state, m, -256, -298)
-			this.draw_grass_patch(graphics_state, m, -526, -231)
-			this.draw_grass_patch(graphics_state, m, -235, -324)
-			this.draw_grass_patch(graphics_state, m, -123, -42)
-			this.draw_grass_patch(graphics_state, m, -22, -532)
-			this.draw_grass_patch(graphics_state, m, -599, -425)
-		
+		this.draw_grass_patch(graphics_state, m, -400, -214)
+		this.draw_grass_patch(graphics_state, m, -256, -298)
+		this.draw_grass_patch(graphics_state, m, -526, -231)
+		this.draw_grass_patch(graphics_state, m, -235, -324)
+		this.draw_grass_patch(graphics_state, m, -123, -42)
+		this.draw_grass_patch(graphics_state, m, -22, -532)
+		this.draw_grass_patch(graphics_state, m, -599, -425)
+	
 	},
 
 	draw_firewood(graphics_state, m, xcoord, ycoord){
@@ -123,7 +107,7 @@ let groundMixin = {
 			this.shapes.cylinder.draw(
             graphics_state,
             m,
-            this.plastic.override({color: this.green}));
+            this.plastic.override({color: this.ground_color}));
 		
 	},
 
