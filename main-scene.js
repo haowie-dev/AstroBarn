@@ -153,15 +153,15 @@ class Assignment_Two extends Scene_Component {
 
   make_bezier_curve(p0, p1, p2, t) {
       var x = 0;
-      var z = 0;
+      var y = 0;
 
       x = Math.pow(1-t, 2) * p0[0]+
               (1-t) * 2 * t * p1[0] + 
               t * t * p2[0];
-      z = Math.pow(1-t, 2) * p0[2] + 
-              (1-t) * 2 * t * p1[2] + 
-              t * t * p2[2];
-      return Vec.of(x, 0, z);
+      y = Math.pow(1-t, 2) * p0[1] + 
+              (1-t) * 2 * t * p1[1] + 
+              t * t * p2[1];
+      return Vec.of(x, y, 0);
   }
       
   display(graphics_state) {
@@ -194,12 +194,8 @@ class Assignment_Two extends Scene_Component {
     this.draw_cloud(m, graphics_state, 7, -50, 45);
     this.draw_cloud(m, graphics_state, 5, 50, 55);
     this.draw_cloud(m, graphics_state, 6.5, 25, 54);
-    this.draw_cow(graphics_state, m);
-    m = m.times(Mat4.translation(Vec.of(-20, 0, 0)));
-    this.draw_flower(m, graphics_state);
-    m = m.times(Mat4.translation(Vec.of(0, 30, 0)));
-    this.draw_butterfly(m, graphics_state);
-    m = m.times(Mat4.translation(Vec.of(50, -30, 0)));
+    this.draw_cow(graphics_state, m, 2);
+    m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
     this.draw_barn(graphics_state, m);
     this.draw_fence_enclosure(graphics_state, m);
 
@@ -215,10 +211,32 @@ class Assignment_Two extends Scene_Component {
          }
        }
      }
+
      this.path_t += this.increment;
-     if (this.path_t == 1) {
+     if (this.path_t >= 1) {
       this.increment = -.01;
+     } else if (this.path_t <= 0) {
+       this.increment = .01;
      }
+
+     m = Mat4.identity();
+     m = m.times(Mat4.translation(Vec.of(-20, 0, 0)));
+     this.draw_flower(m, graphics_state);
+
+     m = m.times(Mat4.translation(Vec.of(-20, 0, 0)));
+     this.draw_flower(m, graphics_state);
+
+     let flower1 = Vec.of(-20,0,0).plus(Vec.of(0, 17, 0)),
+        pmax = Vec.of(-30, 40, 0),
+        flower2 = Vec.of(-40,0,0).plus(Vec.of(0, 17, 0));
+     
+     m = Mat4.identity();
+     let translate_vec = this.make_bezier_curve(flower1, pmax, flower2, this.path_t);
+
+     m = m.times(Mat4.translation(translate_vec));
+     this.draw_butterfly(m, graphics_state);
+
+    m = Mat4.identity();
      for (var i = 0; i < this.array.length; i++) {
        m = Mat4.identity();
        m = m.times(Mat4.rotation(-1*Math.PI/2, Vec.of(1, 0, 0)));
