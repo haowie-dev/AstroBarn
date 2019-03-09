@@ -451,3 +451,100 @@ window.Subdivision_Sphere = window.classes.Subdivision_Sphere = class Subdivisio
     this.subdivideTriangle(ab, bc, ac, count - 1);
   }
 };
+
+window.Petal = window.classes.Petal = class Petal extends Shape {
+  constructor () {
+      super("positions", "normals", "texture_coords");
+
+      this.positions.push(...Vec.cast(
+          [0, 0, 0], [.6, .6, 0], [.7, .9, 0],
+          [.60, 1.15, 0], [.35, 1.3, 0], [0, 1.35, 0], 
+          [-.35, 1.3, 0], [-.60, 1.15, 0], [-.7, .9, 0], 
+          [-.6, .6, 0], 
+          [.3, 1.15, -.1], [0, 1.15, -.1], [-.3, 1.15, -.1],
+          [.55, 1, -.05], [-.55, 1, -.05]
+      ));
+
+      this.normals.push(...Vec.cast(
+          [0,0,1], [0,0,1], [0,0,1], [0,0,1], 
+          [0,0,1], [0,0,1], [0,0,1], [0,0,1], 
+          [0,0,1], [0,0,1], [0,0,1], [0,0,1], 
+          [0,0,1], [0,0,1], [0,0,1]
+      ));
+
+      this.texture_coords.push(...this.positions.map(p => Vec.of(
+          (p[0] + .7)/(1.4), (p[1]/1.35)
+      )));
+
+      this.indices.push(
+          // 0, 1, 2,
+          // 0, 2, 3,
+          // 0, 3, 4,
+          // 0, 4, 5,
+          // 0, 5, 6,
+          // 0, 6, 7,
+          // 0, 7, 8,
+          // 0, 8, 9
+          0, 1, 2,
+          0, 2, 13, 
+          0, 13, 10,
+          0, 10, 11,
+          0, 11, 12,
+          0, 12, 14,
+          0, 14, 8,
+          0, 8, 9, 
+          2, 3, 13,
+          13, 3, 10,
+          3, 4, 10,
+          10, 4, 5,
+          10, 5, 11,
+          11, 5, 12,
+          12, 5, 6,
+          12, 6, 7,
+          12, 7, 14,
+          14, 7, 8
+      )
+  }
+}
+
+window.Pyramid = window.classes.Pyramid = class Pyramid extends Shape {
+  constructor() {
+      super("positions", "normals"); 
+
+      this.positions.push(...Vec.cast(
+          // pyramid base: CCW vertices starting from "bottom" left
+          [-1, 0, 1], [1, 0, 1], [1, 0, -1], [-1, 0, -1],
+          // front face
+          [-1, 0, 1], [1, 0, 1], [0, 1, 0],
+          // right face 
+          [1, 0, 1], [1, 0, -1], [0, 1, 0],
+          // back face
+          [1, 0, -1], [-1, 0, -1], [0, 1, 0],
+          // left face 
+          [-1, 0, -1], [-1, 0, 1], [0, 1, 0]
+      ))
+
+      let a = Math.sqrt(1/2)
+      this.normals.push(...Vec.cast(
+          // bottom 
+          [0, -1, 0], [0, -1, 0], [0, -1, 0], [0, -1, 0],
+          // front
+          [0, a, a], [0, a, a], [0, a, a],
+          // right 
+          [a, a, 0], [a, a, 0], [a, a, 0],
+          // back
+          [0, a, -a], [0, a, -a], [0, a, -a], 
+          // left
+          [-a, a, 0], [-a, a, 0], [-a, a, 0]
+      ))
+
+      this.indices.push(
+          0, 1, 3, 
+          1, 2, 3,
+          4, 5, 6,
+          7, 8, 9,
+          10, 11, 12,
+          13, 14, 15
+      )
+  }
+}
