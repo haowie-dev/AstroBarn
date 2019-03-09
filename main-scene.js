@@ -111,6 +111,7 @@ class Assignment_Two extends Scene_Component {
     ];
 
     this.t = 0;
+    
     var x_func = function(t) {
         return Math.sin(10*t) +15;
     }
@@ -133,6 +134,9 @@ class Assignment_Two extends Scene_Component {
     var second_chicken = new shape_chicken_pos(x_2_func, y_2_func, z_2_func, 10);
     this.array = [first_chicken, second_chicken]; 
 
+    this.path_t = 0;
+    this.increment = 0.01; 
+
   }
 
   // Draw the scene's buttons, setup their actions and keyboard shortcuts, and monitor live measurements.
@@ -140,6 +144,19 @@ class Assignment_Two extends Scene_Component {
     this.key_triggered_button("Pause Time", ["n"], () => {
       this.paused = !this.paused;
     });
+  }
+
+  make_bezier_curve(p0, p1, p2, t) {
+      var x = 0;
+      var z = 0;
+
+      x = Math.pow(1-t, 2) * p0[0]+
+              (1-t) * 2 * t * p1[0] + 
+              t * t * p2[0];
+      z = Math.pow(1-t, 2) * p0[2] + 
+              (1-t) * 2 * t * p1[2] + 
+              t * t * p2[2];
+      return Vec.of(x, 0, z);
   }
       
   display(graphics_state) {
@@ -189,9 +206,13 @@ class Assignment_Two extends Scene_Component {
          }
        }
      }
+     this.path_t += this.increment;
+     if (this.path_t == 1) {
+      this.increment = -.01;
+     }
      for (var i = 0; i < this.array.length; i++) {
        m = Mat4.identity();
-       m = m.times(Mat4.rotation(-1*Math.PI/2, Vec.of(1, 0, 0))); 
+       m = m.times(Mat4.rotation(-1*Math.PI/2, Vec.of(1, 0, 0)));
        this.array[i].draw(this, m, graphics_state, t);
      }
     m = Mat4.identity();
@@ -208,9 +229,6 @@ class Assignment_Two extends Scene_Component {
             .times(Mat4.scale(Vec.of(15 / 1.875, 15 / 1.875, 15 / 1.875))),
             this.clay.override({ color: this.pink })); 
     m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
-
-  
-
   }
 }
 Object.assign(Assignment_Two.prototype, CowMixin);
