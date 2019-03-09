@@ -1,25 +1,30 @@
 class shape_chicken_pos {
-  constructor(x, y, z, alpha) {
+  constructor(x, y, z, alpha, start_x, start_y, start_z) {
     this.x_pos = x;
     this.y_pos = y;
     this.z_pos = z;
     this.alpha = alpha;
+    this.start_x = start_x;
+    this.start_y = start_y;
+    this.start_z = start_z;
   }
   detect_collision(t, other_shape) {
-      var ball_1_x = this.x_pos(t);
-      var ball_1_y = this.y_pos(t);
-      var ball_1_z = this.z_pos(t);
-      var ball_2_x = other_shape.x_pos(t);
-      var ball_2_y = other_shape.y_pos(t);
-      var ball_2_z = other_shape.z_pos(t);
-      var dist = (ball_1_x - ball_2_x) * (ball_1_x - ball_2_x) + (ball_1_y - ball_2_y) * (ball_1_x - ball_2_x) + (ball_1_z - ball_2_z) * (ball_1_z - ball_2_z);
-      if (dist < 2000) {
+      var ball_1_x = this.x_pos(t) + this.start_x;
+      var ball_1_y = this.y_pos(t) + this.start_y;
+      var ball_1_z = this.z_pos(t) + this.start_z;
+      var ball_2_x = other_shape.x_pos(t) + other_shape.start_x;
+      var ball_2_y = other_shape.y_pos(t) + other_shape.start_y;
+      var ball_2_z = other_shape.z_pos(t) + other_shape.start_z;
+      var dist = Math.sqrt((ball_1_x - ball_2_x) * (ball_1_x - ball_2_x) + (ball_1_y - ball_2_y) * (ball_1_y - ball_2_y) + (ball_1_z - ball_2_z) * (ball_1_z - ball_2_z));
+      if (dist < 50 ) {
           return true;
       }
       return false; 
   }
   draw(scene, m, graphics_state, t) {
+      m = m.times(Mat4.rotation(-1*Math.PI/2, Vec.of(1, 0, 0)));
       m = m.times(Mat4.translation(Vec.of(this.x_pos(t), this.y_pos(t), this.z_pos(t))));
+      m = m.times(Mat4.translation(Vec.of(this.start_x, this.start_y, this.start_z)));
       scene.draw_chicken(m, graphics_state, 15, 0, -20, 40, this.alpha);
   }
 }
@@ -120,28 +125,49 @@ class Assignment_Two extends Scene_Component {
     var x_func = function(t) {
         return Math.sin(10*t) +15;
     }
+    var x_2_func = function(t) {
+      return Math.sin(t) * 10 -40;
+    }
+    var x_3_func = function(t) {
+      return 5*(Math.cos(5*t) + 15);
+    }
     var y_func = function(t) {
       return 5 * Math.sin(2*t);
     }
     var z_func = function(t) {
       return -35.7;
     }
-    var x_2_func = function(t) {
-      return Math.sin(t) * 10 -40;
-    }
+
     var y_2_func = function(t) {
       return 5 * Math.sin(2*t);
     }
     var z_2_func = function(t) {
       return -35.7;
     }
-    var first_chicken = new shape_chicken_pos(x_func, y_func, z_func, 10);
-    var second_chicken = new shape_chicken_pos(x_2_func, y_2_func, z_2_func, 10);
-    this.array = [first_chicken, second_chicken]; 
+    var first_chicken = new shape_chicken_pos(x_func, y_func, z_func, 10, 350, 0, 0);
+    var second_chicken = new shape_chicken_pos(x_2_func, y_2_func, z_2_func, 10, 550, 100, 0);
+    var third_chicken = new shape_chicken_pos(x_func, y_2_func, z_2_func, 10, 450, 0, 0);
+    var fourth_chicken = new shape_chicken_pos(x_func, y_2_func, z_2_func, 10, 450, 200, 0);
+    var fifth_chicken = new shape_chicken_pos(x_3_func, y_2_func, z_2_func, 10, 350, 200, 0);
+    var sixth_chicken = new shape_chicken_pos(x_func, y_2_func, z_2_func, 10, 500, 300, 0);
+    var seventh_chicken = new shape_chicken_pos(x_func, y_2_func, z_2_func, 10, 400, 400, 0);
+    var eighth_chicken = new shape_chicken_pos(x_3_func, y_2_func, z_2_func, 10, 500, 400, 0);
+    var ninth_chicken = new shape_chicken_pos(x_func, y_2_func, z_2_func, 10, 300, 300, 0);
+    var tenth_chicken = new shape_chicken_pos(x_3_func, y_2_func, z_2_func, 10, 300, 500, 0);
+    var eleventh_chicken = new shape_chicken_pos(x_2_func, y_func, z_func, 10, 275, 350, 0);
+    var twelfth_chicken = new shape_chicken_pos(x_func, y_2_func, z_2_func, 10, 500, 350, 0);
+    var thirteenth_chicken = new shape_chicken_pos(x_3_func, y_func, z_func, 10, 300, 250, 0);
+    var fourteenth_chicken = new shape_chicken_pos(x_3_func, y_func, z_func, 10, 450, 300, 0);
+    this.array = [first_chicken, second_chicken, third_chicken, fourth_chicken, fifth_chicken, sixth_chicken, seventh_chicken, eighth_chicken,
+    ninth_chicken, tenth_chicken, eleventh_chicken, twelfth_chicken, thirteenth_chicken, fourteenth_chicken]; 
 
     this.path_t = 0;
     this.increment = 0.01; 
-
+    this.camera_transform = false;
+    context.globals.graphics_state.camera_transform = Mat4.translation([0, 0, -35]);
+        context.globals.graphics_state.projection_transform = Mat4.perspective(Math.PI / 4, r, .1, 1000);
+        this.target_position = Vec.of(0, 5, 0);
+        this.og_target_position = Vec.of(-100, -100, -100);
   }
 
   // Draw the scene's buttons, setup their actions and keyboard shortcuts, and monitor live measurements.
@@ -149,6 +175,10 @@ class Assignment_Two extends Scene_Component {
     this.key_triggered_button("Pause Time", ["n"], () => {
       this.paused = !this.paused;
     });
+    this.key_triggered_button("Toggle Camera Transform", ["k"], () => {
+            this.camera_transform = !this.camera_transform;
+    });
+
   }
 
   make_bezier_curve(p0, p1, p2, t) {
@@ -167,7 +197,12 @@ class Assignment_Two extends Scene_Component {
   display(graphics_state) {
     // Use the lights stored in this.lights.
     graphics_state.lights = this.lights;
-
+    if (this.camera_transform == true) {
+        graphics_state.camera_transform = Mat4.look_at(
+            Vec.of(this.target_position[0],this.target_position[1], 35),         // camera position
+            this.target_position,   // reference position to be centered in view
+            Vec.of(0,1,0));         // up direction
+    }
     // Find how much time has passed in seconds, and use that to place shapes.
     if (!this.paused) this.t += graphics_state.animation_delta_time / 1000;
     const t = this.t;
@@ -195,6 +230,12 @@ class Assignment_Two extends Scene_Component {
     this.draw_cloud(m, graphics_state, 5, 50, 55);
     this.draw_cloud(m, graphics_state, 6.5, 25, 54);
     this.draw_cow(graphics_state, m, 2);
+    this.draw_cloud(m, graphics_state, 100, 100, 60);
+//     this.draw_cloud(m, graphics_state, -100, 0, 48);
+//     this.draw_cloud(m, graphics_state, -200, 0, 60);
+
+   
+    this.draw_cow(graphics_state, m);
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
     this.draw_barn(graphics_state, m);
     this.draw_fence_enclosure(graphics_state, m);
@@ -234,12 +275,12 @@ class Assignment_Two extends Scene_Component {
      let translate_vec = this.make_bezier_curve(flower1, pmax, flower2, this.path_t);
 
      m = m.times(Mat4.translation(translate_vec));
+     this.target_position = translate_vec;
      this.draw_butterfly(m, graphics_state);
 
     m = Mat4.identity();
      for (var i = 0; i < this.array.length; i++) {
        m = Mat4.identity();
-       m = m.times(Mat4.rotation(-1*Math.PI/2, Vec.of(1, 0, 0)));
        this.array[i].draw(this, m, graphics_state, t);
      }
     m = Mat4.identity();
