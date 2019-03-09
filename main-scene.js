@@ -1,8 +1,9 @@
 class shape_chicken_pos {
-  constructor(x, y, z) {
+  constructor(x, y, z, alpha) {
     this.x_pos = x;
     this.y_pos = y;
     this.z_pos = z;
+    this.alpha = alpha;
   }
   detect_collision(t, other_shape) {
       var ball_1_x = this.x_pos(t);
@@ -12,7 +13,6 @@ class shape_chicken_pos {
       var ball_2_y = other_shape.y_pos(t);
       var ball_2_z = other_shape.z_pos(t);
       var dist = (ball_1_x - ball_2_x) * (ball_1_x - ball_2_x) + (ball_1_y - ball_2_y) * (ball_1_x - ball_2_x) + (ball_1_z - ball_2_z) * (ball_1_z - ball_2_z);
-      console.log(dist);
       if (dist < 2000) {
           return true;
       }
@@ -20,7 +20,7 @@ class shape_chicken_pos {
   }
   draw(scene, m, graphics_state, t) {
       m = m.times(Mat4.translation(Vec.of(this.x_pos(t), this.y_pos(t), this.z_pos(t))));
-      scene.draw_chicken(m, graphics_state, 15, 0, -20, 40);
+      scene.draw_chicken(m, graphics_state, 15, 0, -20, 40, this.alpha);
   }
 }
 
@@ -95,7 +95,7 @@ class Assignment_Two extends Scene_Component {
     this.brick = Color.of(178 / 255, 34 / 255, 34 / 255, 1);
     this.ground_color = Color.of(148 / 255, 114 / 255, 79 / 255, 1);
     this.green = Color.of(0, 1, 0, 1);
-
+    this.pink = Color.of(220 / 255, 200 / 255, 200 / 255); 
     // Load some textures for the demo shapes
     this.shape_materials = {};
     const shape_textures = {
@@ -129,8 +129,8 @@ class Assignment_Two extends Scene_Component {
     var z_2_func = function(t) {
       return -35.7;
     }
-    var first_chicken = new shape_chicken_pos(x_func, y_func, z_func);
-    var second_chicken = new shape_chicken_pos(x_2_func, y_2_func, z_2_func);
+    var first_chicken = new shape_chicken_pos(x_func, y_func, z_func, 10);
+    var second_chicken = new shape_chicken_pos(x_2_func, y_2_func, z_2_func, 10);
     this.array = [first_chicken, second_chicken]; 
 
   }
@@ -158,6 +158,15 @@ class Assignment_Two extends Scene_Component {
 
     this.cover_farm_firewood(graphics_state, m, 200, 150)
 
+      m = m.times(Mat4.rotation(-1*Math.PI/2, Vec.of(1, 0, 0)));
+      m = m.times(Mat4.rotation(Math.PI/4, Vec.of(0, 1, 0)));
+    this.shapes.cylinder.draw(
+      graphics_state,
+      m.times(Mat4.translation(Vec.of(15, 10, 67.8)))
+      .times(Mat4.scale(3, 3, 3)),
+      this.clay.override({ color: this.yellow })
+    );
+    m = Mat4.identity();
     this.draw_cloud(m, graphics_state, 8, 0, 50);
     this.draw_cloud(m, graphics_state, 3, 30, 40);
     this.draw_cloud(m, graphics_state, 7, -50, 45);
@@ -173,7 +182,10 @@ class Assignment_Two extends Scene_Component {
      for (var i = 0; i < this.array.length; i++) {
        for (var j = i+1; j < this.array.length; j++) {
          if (this.array[i].detect_collision(t, this.array[j])) {
-           this.array.splice(i, 1);
+           this.array[i].z_pos = function(t) {
+             return 3*t;
+           }
+           this.array[i].alpha = 0.1;
          }
        }
      }
@@ -182,8 +194,23 @@ class Assignment_Two extends Scene_Component {
        m = m.times(Mat4.rotation(-1*Math.PI/2, Vec.of(1, 0, 0))); 
        this.array[i].draw(this, m, graphics_state, t);
      }
-
+    m = Mat4.identity();
+            //Initial Body 
+        this.shapes.ball.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(-20, -20, -20)))
+            .times(Mat4.scale(Vec.of(15, 15, 15))), 
+            this.clay.override({ color: this.pink })); 
+        //Head of chicken 
+        this.shapes.ball.draw(
+            graphics_state,
+            m.times(Mat4.translation(Vec.of(-20 + (20 / (15 / 1)), -20, -20+(10 / (15 / 1)))))
+            .times(Mat4.scale(Vec.of(15 / 1.875, 15 / 1.875, 15 / 1.875))),
+            this.clay.override({ color: this.pink })); 
     m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
+
+  
+
   }
 }
 Object.assign(Assignment_Two.prototype, CowMixin);
