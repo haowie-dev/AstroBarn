@@ -334,7 +334,7 @@ class Assignment_Two extends Scene_Component {
     this.draw_cloud(m, graphics_state, 5, 50, 55);
     this.draw_cloud(m, graphics_state, 6.5, 25, 54);
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
-    this.draw_barn(graphics_state, m);
+    this.draw_barn(graphics_state, m, 2);
     //////////////////////////////////////////////////////////////
 
     /////////////////////////// COWS ///////////////////////////
