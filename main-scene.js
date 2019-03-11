@@ -253,7 +253,7 @@ class Assignment_Two extends Scene_Component {
       300,
       0
     );
-    this.array = [
+    this.chicken_array = [
       first_chicken,
       second_chicken,
       third_chicken,
@@ -320,57 +320,53 @@ class Assignment_Two extends Scene_Component {
     // Find how much time has passed in seconds, and use that to place shapes.
     if (!this.paused) this.t += graphics_state.animation_delta_time / 1000;
     const t = this.t;
+    let m = Mat4.identity();
     window.color = Color.of(1, 0, 0, 10);
 
-    let m = Mat4.identity();
+    /////////////////////////// ENVIRONMENT ///////////////////////////
     this.draw_floor(graphics_state, m);
+    this.draw_fence_enclosure(graphics_state, m);
     this.cover_farm_with_grass_patches(graphics_state, m);
     this.cover_farm_firewood(graphics_state, m, 200, 150);
-    m = m.times(Mat4.rotation((-1 * Math.PI) / 2, Vec.of(1, 0, 0)));
-    m = m.times(Mat4.rotation(Math.PI / 4, Vec.of(0, 1, 0)));
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(15, 10, 67.8)))
-        .times(Mat4.scale(3, 3, 3)),
-      this.clay.override({ color: this.yellow })
-    );
-    m = Mat4.identity();
     this.draw_cloud(m, graphics_state, 8, 0, 50);
     this.draw_cloud(m, graphics_state, 3, 30, 40);
     this.draw_cloud(m, graphics_state, 7, -50, 45);
     this.draw_cloud(m, graphics_state, 5, 50, 55);
     this.draw_cloud(m, graphics_state, 6.5, 25, 54);
+    m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
+    this.draw_barn(graphics_state, m);
+    //////////////////////////////////////////////////////////////
+
+    /////////////////////////// COWS ///////////////////////////
     this.draw_cow(graphics_state, m, 2);
     this.draw_cow(graphics_state, m);
-    m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
+    //////////////////////////////////////////////////////////////
 
-    this.draw_barn(graphics_state, m);
-    this.draw_fence_enclosure(graphics_state, m);
-
-    // SMOKE
+    /////////////////////////// SMOKE ///////////////////////////
     m = Mat4.identity();
     // m = m.times(Mat4.translation(Vec.of(0, 1, 10)));
     // this.draw_smoke_chimney(m, graphics_state, this.smoke_array, 40);
+    //////////////////////////////////////////////////////////////
 
-    for (var i = 0; i < this.array.length; i++) {
-      for (var j = i + 1; j < this.array.length; j++) {
-        if (this.array[i].detect_collision(t, this.array[j])) {
-          this.array[i].z_pos = function(t) {
+    /////////////////////////// CHICKENS ///////////////////////////
+    for (var i = 0; i < this.chicken_array.length; i++) {
+      for (var j = i + 1; j < this.chicken_array.length; j++) {
+        if (this.chicken_array[i].detect_collision(t, this.chicken_array[j])) {
+          this.chicken_array[i].z_pos = function(t) {
             return 3 * t;
           };
-          this.array[i].alpha = 0.1;
+          this.chicken_array[i].alpha = 0.1;
         }
       }
     }
 
-    this.path_t += this.increment;
-    if (this.path_t >= 1) {
-      this.increment = -0.01;
-    } else if (this.path_t <= 0) {
-      this.increment = 0.01;
+    for (var i = 0; i < this.chicken_array.length; i++) {
+      m = Mat4.identity();
+      this.chicken_array[i].draw(this, m, graphics_state, t);
     }
+    //////////////////////////////////////////////////////////////
 
+    /////////////////////////// FLOWERS ///////////////////////////
     let flower_scale = 3;
     m = Mat4.identity();
     m = m.times(Mat4.translation(Vec.of(-40, 0, 600)));
@@ -383,8 +379,16 @@ class Assignment_Two extends Scene_Component {
     let flower1 = Vec.of(-40, 0, 600).plus(Vec.of(0, flower_scale * 10, 0)),
       pmax = Vec.of(0, 90, 600),
       flower2 = Vec.of(40, 0, 600).plus(Vec.of(0, flower_scale * 10, 0));
+    //////////////////////////////////////////////////////////////
 
+    /////////////////////////// BUTTERFLY ///////////////////////////
     m = Mat4.identity();
+    this.path_t += this.increment;
+    if (this.path_t >= 1) {
+      this.increment = -0.01;
+    } else if (this.path_t <= 0) {
+      this.increment = 0.01;
+    }
     let translate_vec = this.make_bezier_curve(
       flower1,
       pmax,
@@ -395,34 +399,7 @@ class Assignment_Two extends Scene_Component {
     m = m.times(Mat4.translation(translate_vec));
     this.target_position = translate_vec;
     this.draw_butterfly(m, graphics_state);
-
-    m = Mat4.identity();
-    for (var i = 0; i < this.array.length; i++) {
-      m = Mat4.identity();
-      this.array[i].draw(this, m, graphics_state, t);
-    }
-    m = Mat4.identity();
-    //Initial Body
-    // this.shapes.ball.draw(
-    //   graphics_state,
-    //   m
-    //     .times(Mat4.translation(Vec.of(-20, -20, -20)))
-    //     .times(Mat4.scale(Vec.of(15, 15, 15))),
-    //   this.clay.override({ color: this.pink })
-    // );
-    // //Head of chicken
-    // this.shapes.ball.draw(
-    //   graphics_state,
-    //   m
-    //     .times(
-    //       Mat4.translation(
-    //         Vec.of(-20 + 20 / (15 / 1), -20, -20 + 10 / (15 / 1))
-    //       )
-    //     )
-    //     .times(Mat4.scale(Vec.of(15 / 1.875, 15 / 1.875, 15 / 1.875))),
-    //   this.clay.override({ color: this.pink })
-    // );
-    // m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
+    //////////////////////////////////////////////////////////////
   }
 }
 
