@@ -97,6 +97,18 @@ class Assignment_Two extends Scene_Component {
 
     this.t = 0;
 
+    // SMOKE SET UP
+    this.smoke_array = [];
+    for (let i = 0; i < 150; i++) {
+      const acceleration = getRandom(4, 20);
+      const x_spread = getRandom(3, 10);
+      const z_spread = getRandom(3, 10);
+      this.smoke_array.push(
+        new smoke_particle(acceleration, x_spread, z_spread)
+      );
+    }
+
+    // CHICKEN SET UP
     var x_func = function(t) {
       return Math.sin(10 * t) + 15;
     };
@@ -121,17 +133,6 @@ class Assignment_Two extends Scene_Component {
     var z_2_func = function(t) {
       return -35.7;
     };
-
-    // SMOKE SET UP
-    this.smoke_array = [];
-    for (let i = 0; i < 150; i++) {
-      const acceleration = getRandom(4, 20);
-      const x_spread = getRandom(3, 10);
-      const z_spread = getRandom(3, 10);
-      this.smoke_array.push(
-        new smoke_particle(acceleration, x_spread, z_spread)
-      );
-    }
 
     var first_chicken = new shape_chicken_pos(
       x_func,
@@ -276,6 +277,7 @@ class Assignment_Two extends Scene_Component {
       fourteenth_chicken
     ];
 
+    // CLOUD SET UP
     this.clouds = [];
     for (var i = -800; i < 800; i += 200) {
       for (var j = -800; j < 800; j += 300) {
@@ -285,6 +287,7 @@ class Assignment_Two extends Scene_Component {
         this.clouds.push(cloud);
       }
     }
+    // CAMERA WORK
     this.path_t = 0;
     this.increment = 0.01;
     this.camera_transform = false;
@@ -398,22 +401,29 @@ class Assignment_Two extends Scene_Component {
 
     let m = Mat4.identity();
     /////////////////////////// ENVIRONMENT ///////////////////////////
-    this.draw_silo(m, graphics_state);
     this.draw_clouds(m, graphics_state, this.clouds);
-    this.draw_stable_roof(m, graphics_state);
     this.draw_floor(graphics_state, m);
     this.draw_fence_enclosure(graphics_state, m);
-    this.cover_farm_with_grass_patches(graphics_state, m);
-    this.cover_farm_firewood(graphics_state, m, 200, 150);
-    m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
+    // this.cover_farm_with_grass_patches(graphics_state, m);
+    // this.cover_farm_firewood(graphics_state, m, 200, 150);
+
+    m = m.times(Mat4.translation(Vec.of(100, 0, -300)));
+    this.draw_silo(m, graphics_state);
+
+    m = Mat4.identity();
+    m = m.times(Mat4.translation(Vec.of(0, 0, 200)));
+    this.draw_stable_roof(m, graphics_state);
+
+    m = Mat4.identity();
+    m = m.times(Mat4.translation(Vec.of(20, 0, -20)));
     this.draw_barn(graphics_state, m, 3);
     // //////////////////////////////////////////////////////////////
 
     /////////////////////////// COWS ///////////////////////////
     m = Mat4.identity();
     this.draw_cow(graphics_state, m, 4, 600, 18, 400);
-    this.draw_cow(graphics_state, m, 4, 500, 18, 350);
-    this.draw_cow(graphics_state, m, 4, 300, 18, 250);
+    // this.draw_cow(graphics_state, m, 4, 500, 18, 350);
+    // this.draw_cow(graphics_state, m, 4, 300, 18, 250);
 
     // //////////////////////////////////////////////////////////////
 

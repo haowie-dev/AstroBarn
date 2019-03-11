@@ -1,7 +1,6 @@
 let SiloMixin = {
   draw_silo(m, graphics_state) {
     m = m.times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)));
-    m = m.times(Mat4.translation(Vec.of(0, -300, 0)));
     this.shapes.cylinder.draw(
       graphics_state,
       m

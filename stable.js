@@ -3,8 +3,7 @@ let StableMixin = {
     const barn_length = 20;
     const barn_width = 1;
     const barn_roof_length = barn_length / Math.sqrt(2) + barn_width;
-    // m = m.times(Mat4.rotation(Math.PI / 2, Vec.of(0, -1, 0)));
-    //     m = m.times(Mat4.translation(Vec.of(0, 0)))
+
     this.shapes.box.draw(
       graphics_state,
       m
