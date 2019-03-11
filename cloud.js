@@ -6,6 +6,7 @@ class cloud_coords {
     this.h = height;
   }
 }
+
 let CloudMixin = {
   draw_cloud(m, graphics_state, scale, left_align, height) {
     m = m.times(Mat4.translation(Vec.of(0, height, 0)));
