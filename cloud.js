@@ -8,6 +8,19 @@ class cloud_coords {
 }
 
 let CloudMixin = {
+  draw_clouds(m, graphics_state, cloud_array) {
+    for (var i = 0; i < cloud_array.length; i++) {
+      m = Mat4.identity();
+      m = m.times(Mat4.translation(Vec.of(0, 0, cloud_array[i].z_pos)));
+      this.draw_cloud(
+        m,
+        graphics_state,
+        10 * (cloud_array[i].scale + 1),
+        cloud_array[i].y_pos,
+        cloud_array[i].h
+      );
+    }
+  },
   draw_cloud(m, graphics_state, scale, left_align, height) {
     m = m.times(Mat4.translation(Vec.of(0, height, 0)));
     this.shapes.ball.draw(
