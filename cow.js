@@ -1,6 +1,10 @@
 let CowMixin = {
   
-  draw_cow(graphics_state, m, s) {
+  draw_cow(graphics_state, m, s, xcoord, ycoord, zcoord) {
+
+    m = m.times(Mat4.translation(Vec.of(xcoord, ycoord, zcoord)))
+
+
     this.draw_body(graphics_state, m, s);
     this.draw_legs(graphics_state, m, 1, 1, s);
     this.draw_legs(graphics_state, m, -1, 1, s);

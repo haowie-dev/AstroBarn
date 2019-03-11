@@ -516,8 +516,15 @@ class Assignment_Two extends Scene_Component {
 
     /////////////////////////// COWS ///////////////////////////
     m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(600, 18, 400)))
-    this.draw_cow(graphics_state, m, 4);
+    //m = m.times(Mat4.translation(Vec.of(600, 18, 400)))
+    this.draw_cow(graphics_state, m, 4, 600, 18, 400);
+    this.draw_cow(graphics_state, m, 4, 500, 18, 350);
+
+    this.draw_cow(graphics_state, m, 4, 300, 18, 250);
+
+
+
+
     // //////////////////////////////////////////////////////////////
 
     /////////////////////////// SMOKE ///////////////////////////
