@@ -40,7 +40,8 @@ class Assignment_Two extends Scene_Component {
       cone: new Cone(20),
       ball: new Subdivision_Sphere(4),
       triangular_prism: new TriangularPrism(),
-      petal: new Petal()
+      petal: new Petal(),
+      flatpyramid: new Pyramid()
     };
     this.submit_shapes(context, shapes);
     this.shape_count = Object.keys(shapes).length;
@@ -73,6 +74,8 @@ class Assignment_Two extends Scene_Component {
     this.pink = Color.of(220 / 255, 200 / 255, 200 / 255, 1);
     this.dark_blue = Color.of(0, 120 / 255, 1, 1);
     this.brown = Color.of(208 / 255, 167 / 255, 142 / 255, 1);
+    this.silver = Color.of(211 / 255, 211 / 255, 211 / 255, 1);
+    this.black = Color.of(0, 0, 0, 1);
 
     // Load some textures for the demo shapes
     this.shape_materials = {};
@@ -80,7 +83,8 @@ class Assignment_Two extends Scene_Component {
       square: "assets/dirt.png",
       cylinder: "assets/cow3.png",
       petal: "assets/flower-texture.jpg",
-      petal2: "assets/flower-texture-2.jpg"
+      petal2: "assets/flower-texture-2.jpg",
+      astro: "assets/astro.png"
     };
     for (let t in shape_textures)
       this.shape_materials[t] = this.texture_base.override({
@@ -101,6 +105,9 @@ class Assignment_Two extends Scene_Component {
     };
     var x_3_func = function(t) {
       return 5 * (Math.cos(5 * t) + 15);
+    };
+    var x_4_func = function(t) {
+      return 10 * Math.cos(2 * t) + 10;
     };
     var y_func = function(t) {
       return 5 * Math.sin(2 * t);
@@ -158,8 +165,8 @@ class Assignment_Two extends Scene_Component {
       y_2_func,
       z_2_func,
       10,
-      450,
-      200,
+      350,
+      150,
       0
     );
     var fifth_chicken = new shape_chicken_pos(
@@ -181,7 +188,7 @@ class Assignment_Two extends Scene_Component {
       0
     );
     var seventh_chicken = new shape_chicken_pos(
-      x_func,
+      x_4_func,
       y_2_func,
       z_2_func,
       10,
@@ -221,8 +228,8 @@ class Assignment_Two extends Scene_Component {
       y_func,
       z_func,
       10,
-      275,
-      350,
+      315,
+      250,
       0
     );
     var twelfth_chicken = new shape_chicken_pos(
@@ -244,7 +251,7 @@ class Assignment_Two extends Scene_Component {
       0
     );
     var fourteenth_chicken = new shape_chicken_pos(
-      x_3_func,
+      x_4_func,
       y_func,
       z_func,
       10,
@@ -304,188 +311,6 @@ class Assignment_Two extends Scene_Component {
     this.target_position = this.camera_positions.aerial;
   }
 
-  draw_stable_roof(m, graphics_state) {
-    const barn_length = 20;
-    const barn_width = 1;
-    const barn_roof_length = barn_length / Math.sqrt(2) + barn_width;
-    // m = m.times(Mat4.rotation(Math.PI / 2, Vec.of(0, -1, 0)));
-    //     m = m.times(Mat4.translation(Vec.of(0, 0)))
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(0, -1, 0)))
-        .times(Mat4.translation(Vec.of(0, 50, 2 * -barn_length + 300)))
-        .times(Mat4.rotation(-Math.PI / 3, Vec.of(1, 0, 0)))
-        .times(
-          Mat4.scale(
-            Vec.of(2 * (barn_length + 4), barn_roof_length, barn_width)
-          )
-        ),
-      this.plastic.override({
-        color: Color.of(208 / 255, 167 / 255, 142 / 255, 1)
-      })
-    );
-
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.rotation(-Math.PI / 2, Vec.of(0, -1, 0)))
-        .times(Mat4.translation(Vec.of(0, 50, 2 * barn_length - 275)))
-        .times(Mat4.rotation(-Math.PI / 3, Vec.of(1, 0, 0)))
-        .times(
-          Mat4.scale(
-            Vec.of(2 * (barn_length + 4), barn_roof_length, barn_width)
-          )
-        ),
-      this.plastic.override({
-        color: this.brown
-      })
-    );
-
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-225, 10, 40)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
-        .times(Mat4.scale(Vec.of(1, 1, 35))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-225, 10, -20)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
-        .times(Mat4.scale(Vec.of(1, 1, 35))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-270, 10, -20)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
-        .times(Mat4.scale(Vec.of(1, 1, 35))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-270, 10, 40)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
-        .times(Mat4.scale(Vec.of(1, 1, 35))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-270, 10, 10)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
-        .times(Mat4.scale(Vec.of(1, 1, 35))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-225, 10, 10)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
-        .times(Mat4.scale(Vec.of(1, 1, 35))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-270, 10, -45)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
-        .times(Mat4.scale(Vec.of(1, 1, 35))),
-      this.plastic.override({ color: this.brown })
-    );
-
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-225, 10, -45)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
-        .times(Mat4.scale(Vec.of(1, 1, 35))),
-      this.plastic.override({ color: this.brown })
-    );
-
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-225, 0, 25)))
-        .times(Mat4.scale(Vec.of(1, 20, 15))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-270, 0, 25)))
-        .times(Mat4.scale(Vec.of(1, 20, 15))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-270, 0, -5)))
-        .times(Mat4.scale(Vec.of(1, 20, 15))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-210, 0, -20)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(0, 1, 0)))
-        .times(Mat4.scale(Vec.of(1, 20, 15))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-225, 0, -32)))
-        .times(Mat4.scale(Vec.of(1, 20, 13))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-270, 0, -30)))
-        .times(Mat4.scale(Vec.of(1, 20, 15))),
-      this.plastic.override({ color: this.brown })
-    );
-
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-247, 0, 40)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(0, 1, 0)))
-        .times(Mat4.scale(Vec.of(1, 20, 23))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-247, 0, 10)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(0, 1, 0)))
-        .times(Mat4.scale(Vec.of(1, 20, 23))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-247, 0, -20)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(0, 1, 0)))
-        .times(Mat4.scale(Vec.of(1, 20, 23))),
-      this.plastic.override({ color: this.brown })
-    );
-    this.shapes.box.draw(
-      graphics_state,
-      m
-        .times(Mat4.translation(Vec.of(-247, 0, -45)))
-        .times(Mat4.rotation(Math.PI / 2, Vec.of(0, 1, 0)))
-        .times(Mat4.scale(Vec.of(1, 20, 23))),
-      this.plastic.override({ color: this.brown })
-    );
-  }
-
   make_control_panel() {
     this.key_triggered_button("Pause Time", ["n"], () => {
       this.paused = !this.paused;
@@ -525,6 +350,7 @@ class Assignment_Two extends Scene_Component {
   display(graphics_state) {
     // Use the lights stored in this.lights.
     graphics_state.lights = this.lights;
+    window.color = Color.of(1, 0, 0, 10);
 
     // Find how much time has passed in seconds, and use that to place shapes.
     if (!this.paused) this.t += graphics_state.animation_delta_time / 1000;
@@ -571,47 +397,30 @@ class Assignment_Two extends Scene_Component {
     }
 
     let m = Mat4.identity();
-    window.color = Color.of(1, 0, 0, 10);
-
-    m = m.times(Mat4.rotation((-1 * Math.PI) / 2, Vec.of(1, 0, 0)));
-    m = m.times(Mat4.rotation(Math.PI / 4, Vec.of(0, 1, 0)));
-
     /////////////////////////// ENVIRONMENT ///////////////////////////
-
-    ///////////////// CLOUDS ////////////////////
-    // for (var i = 0; i < this.clouds.length; i++) {
-    //   m = Mat4.identity();
-    //   m = m.times(Mat4.translation(Vec.of(0, 0, this.clouds[i].z_pos)));
-    //   this.draw_cloud(
-    //     m,
-    //     graphics_state,
-    //     10 * (this.clouds[i].scale + 1),
-    //     this.clouds[i].y_pos,
-    //     this.clouds[i].h
-    //   );
-    // }
-
-    ////////////////////////////////////////////
-    m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
-
-    // this.draw_stable_roof(m, graphics_state);
+    this.draw_silo(m, graphics_state);
+    this.draw_clouds(m, graphics_state, this.clouds);
+    this.draw_stable_roof(m, graphics_state);
     this.draw_floor(graphics_state, m);
     this.draw_fence_enclosure(graphics_state, m);
-    // this.cover_farm_with_grass_patches(graphics_state, m);
-    // this.cover_farm_firewood(graphics_state, m, 200, 150);
-    m = m.times(Mat4.translation(Vec.of(-80, 0, -20)));
+    this.cover_farm_with_grass_patches(graphics_state, m);
+    this.cover_farm_firewood(graphics_state, m, 200, 150);
+    m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
     this.draw_barn(graphics_state, m, 3);
     // //////////////////////////////////////////////////////////////
 
     /////////////////////////// COWS ///////////////////////////
-    // this.draw_cow(graphics_state, m, 2);
+    m = Mat4.identity();
+    this.draw_cow(graphics_state, m, 4, 600, 18, 400);
+    this.draw_cow(graphics_state, m, 4, 500, 18, 350);
+    this.draw_cow(graphics_state, m, 4, 300, 18, 250);
+
     // //////////////////////////////////////////////////////////////
 
     /////////////////////////// SMOKE ///////////////////////////
     m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(-20, 40, 0)));
-    this.draw_smoke_chimney(m, graphics_state, this.smoke_array, 40);
+    // m = m.times(Mat4.translation(Vec.of(-20, 40, 0)));
+    // this.draw_smoke_chimney(m, graphics_state, this.smoke_array, 40);
     // //////////////////////////////////////////////////////////////
 
     // /////////////////////////// CHICKENS ///////////////////////////
@@ -647,7 +456,36 @@ class Assignment_Two extends Scene_Component {
       flower2 = Vec.of(40, 0, 600).plus(Vec.of(0, flower_scale * 10, 0));
     // //////////////////////////////////////////////////////////////
 
-    // /////////////////////////// BUTTERFLY ///////////////////////////
+    /////////////////////////// OTHER FLOWERS ///////////////////////
+    m = Mat4.identity();
+    m = m.times(Mat4.translation(Vec.of(-200, 0, 500)));
+    this.draw_flower(m, graphics_state, 1.8);
+    for (let i = 0; i < 8; i++) {
+      let n = m;
+      let size = 2;
+      if (i % 2 === 0) {
+        n = m
+          .times(Mat4.rotation((i * Math.PI) / 4, Vec.of(0, 1, 0)))
+          .times(Mat4.translation(Vec.of(40 + i * 3, 0, 0)));
+        size = 2.3;
+      } else {
+        n = m
+          .times(
+            Mat4.rotation((i * Math.PI) / 4 - Math.PI / 2, Vec.of(0, 1, 0))
+          )
+          .times(Mat4.translation(Vec.of(40 + i * 3, 0, 0)));
+        size = 1.8;
+      }
+      this.draw_flower(n, graphics_state, size);
+    }
+    let f_pos = m.times(Mat4.translation(Vec.of(-20, 0, 20)));
+    this.draw_flower(f_pos, graphics_state, 1.3);
+    f_pos = m.times(Mat4.translation(Vec.of(-23, 0, -18)));
+    this.draw_flower(f_pos, graphics_state, 1.6);
+
+    //////////////////////////////////////////////////////////////
+
+    /////////////////////////// BUTTERFLY ///////////////////////////
     m = Mat4.identity();
     this.path_t += this.increment;
     if (this.path_t >= 1) {
@@ -682,5 +520,7 @@ Object.assign(Assignment_Two.prototype, groundMixin);
 Object.assign(Assignment_Two.prototype, FenceMixin);
 Object.assign(Assignment_Two.prototype, SmokeMixin);
 Object.assign(Assignment_Two.prototype, FlowerMixin);
+Object.assign(Assignment_Two.prototype, StableMixin);
+Object.assign(Assignment_Two.prototype, SiloMixin);
 
 window.Assignment_Two = window.classes.Assignment_Two = Assignment_Two;
