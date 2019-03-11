@@ -14,7 +14,13 @@ let FenceMixin = {
       this.draw_fence(graphics_state, m, i, 0, -650, 1.571, 0, 1, 0);
     }
 
-    m = m.times(Mat4.rotation(1.57, Vec.of(0, 1, 0))); //move everything up 10 units
+
+    for (var i = 200; i <= 500; i += 100) {
+      this.draw_fence(graphics_state, m, i, 0, 100, 1.571, 0, 1, 0);
+    }
+    this.draw_fence(graphics_state, m, i, 0, 100, 1.571, 0, 1, 0);
+
+    m = m.times(Mat4.rotation(1.57, Vec.of(0, 1, 0))); 
 
     for (var i = -600; i <= 600; i += 100) {
       this.draw_fence(graphics_state, m, i, 0, 650, 1.571, 0, 1, 0);
@@ -23,6 +29,14 @@ let FenceMixin = {
     for (var i = -600; i <= 600; i += 100) {
       this.draw_fence(graphics_state, m, i, 0, -650, 1.571, 0, 1, 0);
     }
+
+
+    for (var i = -600; i <= 600; i += 100) {
+      this.draw_fence(graphics_state, m, i, 0, 200, 1.571, 0, 1, 0);
+    }
+
+
+
   },
 
   draw_fence(
@@ -90,5 +104,5 @@ let FenceMixin = {
       ),
       this.plastic.override({ color: this.brick })
     );
-  }
+  },
 };

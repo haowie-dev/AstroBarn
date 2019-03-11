@@ -39,7 +39,8 @@ class Assignment_Two extends Scene_Component {
       cylinder: new Cylinder(15),
       cone: new Cone(20),
       ball: new Subdivision_Sphere(4),
-      triangular_prism: new TriangularPrism()
+      triangular_prism: new TriangularPrism(),
+      petal: new Petal()
     };
     this.submit_shapes(context, shapes);
     this.shape_count = Object.keys(shapes).length;
@@ -68,18 +69,16 @@ class Assignment_Two extends Scene_Component {
     this.brick = Color.of(178 / 255, 34 / 255, 34 / 255, 1);
     this.ground_color = Color.of(148 / 255, 114 / 255, 79 / 255, 1);
     this.smoke_color = Color.of(169 / 255, 169 / 255, 169 / 255, 0.9);
+    this.green = Color.of(0, 1, 0, 1);
+    this.pink = Color.of(220 / 255, 200 / 255, 200 / 255, 1);
+    this.dark_blue = Color.of(0, 120 / 255, 1, 1);
 
     // Load some textures for the demo shapes
     this.shape_materials = {};
     const shape_textures = {
-      square: "assets/butterfly.png",
-      box: "assets/even-dice-cubemap.png",
-      ball: "assets/soccer_sph_s_resize.png",
-      cylinder: "assets/treebark.png",
-      pyramid: "assets/tetrahedron-texture2.png",
-      simplebox: "assets/tetrahedron-texture2.png",
-      cone: "assets/hypnosis.jpg",
-      circle: "assets/hypnosis.jpg"
+      square: "assets/dirt.png",
+      petal: "assets/flower-texture.jpg",
+      petal2: "assets/flower-texture-2.jpg"
     };
     for (let t in shape_textures)
       this.shape_materials[t] = this.texture_base.override({
@@ -91,17 +90,21 @@ class Assignment_Two extends Scene_Component {
     ];
 
     this.t = 0;
+
     var x_func = function(t) {
       return Math.sin(10 * t) + 15;
+    };
+    var x_2_func = function(t) {
+      return Math.sin(t) * 10 - 40;
+    };
+    var x_3_func = function(t) {
+      return 5 * (Math.cos(5 * t) + 15);
     };
     var y_func = function(t) {
       return 5 * Math.sin(2 * t);
     };
     var z_func = function(t) {
       return -35.7;
-    };
-    var x_2_func = function(t) {
-      return Math.sin(t) * 10 - 40;
     };
     var y_2_func = function(t) {
       return 5 * Math.sin(2 * t);
@@ -114,15 +117,175 @@ class Assignment_Two extends Scene_Component {
     this.chicken_array = [first_chicken, second_chicken];
 
     // SMOKE SET UP
-    this.smoke_array = [];
-    for (let i = 0; i < 750; i++) {
-      const acceleration = getRandom(4, 20);
-      const x_spread = getRandom(3, 10);
-      const z_spread = getRandom(3, 10);
-      this.smoke_array.push(
-        new smoke_particle(acceleration, x_spread, z_spread)
-      );
-    }
+    // this.smoke_array = [];
+    // for (let i = 0; i < 750; i++) {
+    //   const acceleration = getRandom(4, 20);
+    //   const x_spread = getRandom(3, 10);
+    //   const z_spread = getRandom(3, 10);
+    //   this.smoke_array.push(
+    //     new smoke_particle(acceleration, x_spread, z_spread)
+    //   );
+    // }
+
+    var first_chicken = new shape_chicken_pos(
+      x_func,
+      y_func,
+      z_func,
+      10,
+      350,
+      0,
+      0
+    );
+    var second_chicken = new shape_chicken_pos(
+      x_2_func,
+      y_2_func,
+      z_2_func,
+      10,
+      550,
+      100,
+      0
+    );
+    var third_chicken = new shape_chicken_pos(
+      x_func,
+      y_2_func,
+      z_2_func,
+      10,
+      450,
+      0,
+      0
+    );
+    var fourth_chicken = new shape_chicken_pos(
+      x_func,
+      y_2_func,
+      z_2_func,
+      10,
+      450,
+      200,
+      0
+    );
+    var fifth_chicken = new shape_chicken_pos(
+      x_3_func,
+      y_2_func,
+      z_2_func,
+      10,
+      350,
+      200,
+      0
+    );
+    var sixth_chicken = new shape_chicken_pos(
+      x_func,
+      y_2_func,
+      z_2_func,
+      10,
+      500,
+      300,
+      0
+    );
+    var seventh_chicken = new shape_chicken_pos(
+      x_func,
+      y_2_func,
+      z_2_func,
+      10,
+      400,
+      400,
+      0
+    );
+    var eighth_chicken = new shape_chicken_pos(
+      x_3_func,
+      y_2_func,
+      z_2_func,
+      10,
+      500,
+      400,
+      0
+    );
+    var ninth_chicken = new shape_chicken_pos(
+      x_func,
+      y_2_func,
+      z_2_func,
+      10,
+      300,
+      300,
+      0
+    );
+    var tenth_chicken = new shape_chicken_pos(
+      x_3_func,
+      y_2_func,
+      z_2_func,
+      10,
+      300,
+      500,
+      0
+    );
+    var eleventh_chicken = new shape_chicken_pos(
+      x_2_func,
+      y_func,
+      z_func,
+      10,
+      275,
+      350,
+      0
+    );
+    var twelfth_chicken = new shape_chicken_pos(
+      x_func,
+      y_2_func,
+      z_2_func,
+      10,
+      500,
+      350,
+      0
+    );
+    var thirteenth_chicken = new shape_chicken_pos(
+      x_3_func,
+      y_func,
+      z_func,
+      10,
+      300,
+      250,
+      0
+    );
+    var fourteenth_chicken = new shape_chicken_pos(
+      x_3_func,
+      y_func,
+      z_func,
+      10,
+      450,
+      300,
+      0
+    );
+    this.array = [
+      first_chicken,
+      second_chicken,
+      third_chicken,
+      fourth_chicken,
+      fifth_chicken,
+      sixth_chicken,
+      seventh_chicken,
+      eighth_chicken,
+      ninth_chicken,
+      tenth_chicken,
+      eleventh_chicken,
+      twelfth_chicken,
+      thirteenth_chicken,
+      fourteenth_chicken
+    ];
+
+    this.path_t = 0;
+    this.increment = 0.01;
+    this.camera_transform = false;
+    context.globals.graphics_state.camera_transform = Mat4.translation([
+      0,
+      0,
+      -300
+    ]);
+    context.globals.graphics_state.projection_transform = Mat4.perspective(
+      Math.PI / 4,
+      r,
+      0.1,
+      1000
+    );
+    this.target_position = Vec.of(0, 5, 0);
+    this.og_target_position = Vec.of(-100, -100, -100);
   }
 
   // Draw the scene's buttons, setup their actions and keyboard shortcuts, and monitowr live measurements.
@@ -130,12 +293,30 @@ class Assignment_Two extends Scene_Component {
     this.key_triggered_button("Pause Time", ["n"], () => {
       this.paused = !this.paused;
     });
+    this.key_triggered_button("Toggle Camera Transform", ["k"], () => {
+      this.camera_transform = !this.camera_transform;
+    });
+  }
+
+  make_bezier_curve(p0, p1, p2, t) {
+    var x = 0;
+    var y = 0;
+
+    x = Math.pow(1 - t, 2) * p0[0] + (1 - t) * 2 * t * p1[0] + t * t * p2[0];
+    y = Math.pow(1 - t, 2) * p0[1] + (1 - t) * 2 * t * p1[1] + t * t * p2[1];
+    return Vec.of(x, y, p1[2]);
   }
 
   display(graphics_state) {
     // Use the lights stored in this.lights.
     graphics_state.lights = this.lights;
-
+    if (this.camera_transform == true) {
+      graphics_state.camera_transform = Mat4.look_at(
+        Vec.of(this.target_position[0], this.target_position[1], 35), // camera position
+        this.target_position, // reference position to be centered in view
+        Vec.of(0, 1, 0)
+      ); // up direction
+    }
     // Find how much time has passed in seconds, and use that to place shapes.
     if (!this.paused) this.t += graphics_state.animation_delta_time / 1000;
     const t = this.t;
@@ -143,39 +324,105 @@ class Assignment_Two extends Scene_Component {
 
     let m = Mat4.identity();
     this.draw_floor(graphics_state, m);
+    this.cover_farm_with_grass_patches(graphics_state, m);
+    this.cover_farm_firewood(graphics_state, m, 200, 150);
+    m = m.times(Mat4.rotation((-1 * Math.PI) / 2, Vec.of(1, 0, 0)));
+    m = m.times(Mat4.rotation(Math.PI / 4, Vec.of(0, 1, 0)));
+    this.shapes.cylinder.draw(
+      graphics_state,
+      m
+        .times(Mat4.translation(Vec.of(15, 10, 67.8)))
+        .times(Mat4.scale(3, 3, 3)),
+      this.clay.override({ color: this.yellow })
+    );
+    m = Mat4.identity();
     this.draw_cloud(m, graphics_state, 8, 0, 50);
     this.draw_cloud(m, graphics_state, 3, 30, 40);
     this.draw_cloud(m, graphics_state, 7, -50, 45);
     this.draw_cloud(m, graphics_state, 5, 50, 55);
     this.draw_cloud(m, graphics_state, 6.5, 25, 54);
+    this.draw_cow(graphics_state, m, 2);
     this.draw_cow(graphics_state, m);
-
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
 
     this.draw_barn(graphics_state, m);
     this.draw_fence_enclosure(graphics_state, m);
-    for (var i = 0; i < this.chicken_array.length; i++) {
-      for (var j = i + 1; j < this.chicken_array.length; j++) {
-        if (this.chicken_array[i].detect_collision(t, this.chicken_array[j])) {
-          this.chicken_array.splice(i, 1);
+
+    // SMOKE
+    m = Mat4.identity();
+    // m = m.times(Mat4.translation(Vec.of(0, 1, 10)));
+    // this.draw_smoke_chimney(m, graphics_state, this.smoke_array, 40);
+
+    for (var i = 0; i < this.array.length; i++) {
+      for (var j = i + 1; j < this.array.length; j++) {
+        if (this.array[i].detect_collision(t, this.array[j])) {
+          this.array[i].z_pos = function(t) {
+            return 3 * t;
+          };
+          this.array[i].alpha = 0.1;
         }
       }
-      for (var i = 0; i < this.chicken_array.length; i++) {
-        m = Mat4.identity();
-        m = m.times(Mat4.rotation((-1 * Math.PI) / 2, Vec.of(1, 0, 0)));
-        this.chicken_array[i].draw(this, m, graphics_state, t);
-      }
-
-      m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
-
-      // SMOKE
-      m = Mat4.identity();
-      m = m.times(Mat4.translation(Vec.of(0, 1, 10)));
-      for (var i = 0; i < this.smoke_array.length; i++) {
-        this.smoke_array[i].draw(this, m, graphics_state);
-      }
-      this.draw_smoke_chimney(m, graphics_state, this.smoke_array, 40);
     }
+
+    this.path_t += this.increment;
+    if (this.path_t >= 1) {
+      this.increment = -0.01;
+    } else if (this.path_t <= 0) {
+      this.increment = 0.01;
+    }
+
+    let flower_scale = 3;
+    m = Mat4.identity();
+    m = m.times(Mat4.translation(Vec.of(-40, 0, 600)));
+    this.draw_flower(m, graphics_state, flower_scale);
+
+    m = Mat4.identity();
+    m = m.times(Mat4.translation(Vec.of(40, 0, 600)));
+    this.draw_flower(m, graphics_state, flower_scale);
+
+    let flower1 = Vec.of(-40, 0, 600).plus(Vec.of(0, flower_scale * 10, 0)),
+      pmax = Vec.of(0, 90, 600),
+      flower2 = Vec.of(40, 0, 600).plus(Vec.of(0, flower_scale * 10, 0));
+
+    m = Mat4.identity();
+    let translate_vec = this.make_bezier_curve(
+      flower1,
+      pmax,
+      flower2,
+      this.path_t
+    );
+
+    m = m.times(Mat4.translation(translate_vec));
+    this.target_position = translate_vec;
+    this.draw_butterfly(m, graphics_state);
+
+    m = Mat4.identity();
+    for (var i = 0; i < this.array.length; i++) {
+      m = Mat4.identity();
+      this.array[i].draw(this, m, graphics_state, t);
+    }
+    m = Mat4.identity();
+    //Initial Body
+    // this.shapes.ball.draw(
+    //   graphics_state,
+    //   m
+    //     .times(Mat4.translation(Vec.of(-20, -20, -20)))
+    //     .times(Mat4.scale(Vec.of(15, 15, 15))),
+    //   this.clay.override({ color: this.pink })
+    // );
+    // //Head of chicken
+    // this.shapes.ball.draw(
+    //   graphics_state,
+    //   m
+    //     .times(
+    //       Mat4.translation(
+    //         Vec.of(-20 + 20 / (15 / 1), -20, -20 + 10 / (15 / 1))
+    //       )
+    //     )
+    //     .times(Mat4.scale(Vec.of(15 / 1.875, 15 / 1.875, 15 / 1.875))),
+    //   this.clay.override({ color: this.pink })
+    // );
+    // m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
   }
 }
 
@@ -185,10 +432,12 @@ function getRandom(min, max) {
 
 Object.assign(Assignment_Two.prototype, CowMixin);
 Object.assign(Assignment_Two.prototype, BarnMixin);
+Object.assign(Assignment_Two.prototype, ButterflyMixin);
 Object.assign(Assignment_Two.prototype, CloudMixin);
 Object.assign(Assignment_Two.prototype, ChickenMixin);
 Object.assign(Assignment_Two.prototype, groundMixin);
 Object.assign(Assignment_Two.prototype, FenceMixin);
 Object.assign(Assignment_Two.prototype, SmokeMixin);
+Object.assign(Assignment_Two.prototype, FlowerMixin);
 
 window.Assignment_Two = window.classes.Assignment_Two = Assignment_Two;
