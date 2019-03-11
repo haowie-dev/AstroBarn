@@ -40,7 +40,8 @@ class Assignment_Two extends Scene_Component {
       cone: new Cone(20),
       ball: new Subdivision_Sphere(4),
       triangular_prism: new TriangularPrism(),
-      petal: new Petal()
+      petal: new Petal(),
+      flatpyramid: new Pyramid(),
     };
     this.submit_shapes(context, shapes);
     this.shape_count = Object.keys(shapes).length;
@@ -74,6 +75,8 @@ class Assignment_Two extends Scene_Component {
     this.dark_blue = Color.of(0, 120/255,1,1);
     this.brown = Color.of(208 / 255, 167 / 255, 142 / 255, 1)
     this.silver = Color.of(211 / 255, 211 / 255 , 211 / 255, 1);
+    this.black = Color.of(0, 0, 0, 1);
+
     // Load some textures for the demo shapes
     this.shape_materials = {};
     const shape_textures = {
@@ -124,7 +127,7 @@ class Assignment_Two extends Scene_Component {
 
     // SMOKE SET UP
     // this.smoke_array = [];
-    // for (let i = 0; i < 750; i++) {
+    // for (let i = 0; i < 2000; i++) {
     //   const acceleration = getRandom(4, 20);
     //   const x_spread = getRandom(3, 10);
     //   const z_spread = getRandom(3, 10);
@@ -304,7 +307,46 @@ class Assignment_Two extends Scene_Component {
   }
 
   draw_silo(m, graphics_state) {
+    m = m.times(Mat4.rotation(Math.PI/2, Vec.of(1, 0, 0)));
+    m = m.times(Mat4.translation(Vec.of(0, -300, 0)));
+    this.shapes.cylinder.draw(
+      graphics_state,
+      m.times(Mat4.translation(Vec.of(-250, -40, -50)))
+      .times(Mat4.rotation(-Math.PI, Vec.of(1, 0, 0)))
+      .times(Mat4.scale(Vec.of(50, 50, 75))),
+      this.plastic.override({ color: this.silver }));
+    this.shapes.box.draw(
+        graphics_state,
+        m.times(Mat4.translation(Vec.of(-240, 10, -50)))
+        .times(Mat4.rotation(-Math.PI/2, Vec.of(1, 0, 0)))
+        .times(Mat4.rotation(-Math.PI/2, Vec.of(0, 0, 1)))
+        .times(Mat4.scale(Vec.of(30, 30, 1))),
+        this.shape_materials["astro"]);
+    this.shapes.ball.draw(
+        graphics_state,
+        m.times(Mat4.translation(Vec.of(-250, -40, -125))).
+        times(Mat4.scale(49.5, 49.5, 49.5)),
+        this.plastic.override({ color: this.silver }));
 
+    m = m.times(Mat4.translation(Vec.of(0, -800, 0)));
+    this.shapes.cylinder.draw(
+      graphics_state,
+      m.times(Mat4.translation(Vec.of(-250, -40, -50)))
+      .times(Mat4.rotation(-Math.PI, Vec.of(1, 0, 0)))
+      .times(Mat4.scale(Vec.of(50, 50, 75))),
+      this.plastic.override({ color: this.silver }));
+    this.shapes.box.draw(
+        graphics_state,
+        m.times(Mat4.translation(Vec.of(-240, 10, -50)))
+        .times(Mat4.rotation(-Math.PI/2, Vec.of(1, 0, 0)))
+        .times(Mat4.rotation(-Math.PI/2, Vec.of(0, 0, 1)))
+        .times(Mat4.scale(Vec.of(30, 30, 1))),
+        this.shape_materials["astro"]);
+    this.shapes.ball.draw(
+        graphics_state,
+        m.times(Mat4.translation(Vec.of(-250, -40, -125))).
+        times(Mat4.scale(49.1, 49.1, 49.1)),
+        this.plastic.override({ color: this.silver }));
   }
 
 
@@ -480,7 +522,7 @@ class Assignment_Two extends Scene_Component {
     graphics_state.lights = this.lights;
     if (this.camera_transform == true) {
       graphics_state.camera_transform = Mat4.look_at(
-        Vec.of(this.target_position[0], this.target_position[1], 35), // camera position
+        Vec.of(this.target_position[0], this.target_position[1], this.target_position[2] - 180), // camera position
         this.target_position, // reference position to be centered in view
         Vec.of(0, 1, 0)
       ); // up direction
@@ -509,45 +551,7 @@ class Assignment_Two extends Scene_Component {
 
                 ////////////////////////////////////////////
     this.draw_silo(m, graphics_state);
-    m = m.times(Mat4.rotation(Math.PI/2, Vec.of(1, 0, 0)));
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m.times(Mat4.translation(Vec.of(-250, -40, -50)))
-      .times(Mat4.rotation(-Math.PI, Vec.of(1, 0, 0)))
-      .times(Mat4.scale(Vec.of(50, 50, 75))),
-      this.plastic.override({ color: this.silver }));
-    this.shapes.box.draw(
-        graphics_state,
-        m.times(Mat4.translation(Vec.of(-240, 10, -50)))
-        .times(Mat4.rotation(-Math.PI/2, Vec.of(1, 0, 0)))
-        .times(Mat4.rotation(-Math.PI/2, Vec.of(0, 0, 1)))
-        .times(Mat4.scale(Vec.of(30, 30, 1))),
-        this.shape_materials["astro"]);
-    this.shapes.ball.draw(
-        graphics_state,
-        m.times(Mat4.translation(Vec.of(-250, -40, -125))).
-        times(Mat4.scale(49.5, 49.5, 49.5)),
-        this.plastic.override({ color: this.silver }));
-
-    m = m.times(Mat4.translation(Vec.of(0, -1000, 0)));
-    this.shapes.cylinder.draw(
-      graphics_state,
-      m.times(Mat4.translation(Vec.of(-250, -40, -50)))
-      .times(Mat4.rotation(-Math.PI, Vec.of(1, 0, 0)))
-      .times(Mat4.scale(Vec.of(50, 50, 75))),
-      this.plastic.override({ color: this.silver }));
-    this.shapes.box.draw(
-        graphics_state,
-        m.times(Mat4.translation(Vec.of(-240, 10, -50)))
-        .times(Mat4.rotation(-Math.PI/2, Vec.of(1, 0, 0)))
-        .times(Mat4.rotation(-Math.PI/2, Vec.of(0, 0, 1)))
-        .times(Mat4.scale(Vec.of(30, 30, 1))),
-        this.shape_materials["astro"]);
-    this.shapes.ball.draw(
-        graphics_state,
-        m.times(Mat4.translation(Vec.of(-250, -40, -125))).
-        times(Mat4.scale(49.1, 49.1, 49.1)),
-        this.plastic.override({ color: this.silver }));
+    
     m = Mat4.identity();
    
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
@@ -558,11 +562,20 @@ class Assignment_Two extends Scene_Component {
     this.cover_farm_with_grass_patches(graphics_state, m);
     this.cover_farm_firewood(graphics_state, m, 200, 150);
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
-    this.draw_barn(graphics_state, m, 2);
+    this.draw_barn(graphics_state, m, 3);
     // //////////////////////////////////////////////////////////////
 
     /////////////////////////// COWS ///////////////////////////
-    this.draw_cow(graphics_state, m, 2);
+    m = Mat4.identity();
+    //m = m.times(Mat4.translation(Vec.of(600, 18, 400)))
+    this.draw_cow(graphics_state, m, 4, 600, 18, 400);
+    this.draw_cow(graphics_state, m, 4, 500, 18, 350);
+
+    this.draw_cow(graphics_state, m, 4, 300, 18, 250);
+
+
+
+
     // //////////////////////////////////////////////////////////////
 
     /////////////////////////// SMOKE ///////////////////////////
@@ -604,7 +617,30 @@ class Assignment_Two extends Scene_Component {
       flower2 = Vec.of(40, 0, 600).plus(Vec.of(0, flower_scale * 10, 0));
     // //////////////////////////////////////////////////////////////
 
-    // /////////////////////////// BUTTERFLY ///////////////////////////
+    /////////////////////////// OTHER FLOWERS ///////////////////////
+    m = Mat4.identity();
+    m = m.times(Mat4.translation(Vec.of(-200, 0, 500)));
+    this.draw_flower(m, graphics_state, 1.8);
+    for (let i = 0; i < 8; i++) {
+      let n = m;
+      let size = 2;
+      if (i%2 === 0) {
+        n = m.times(Mat4.rotation(i * Math.PI/4, Vec.of(0, 1, 0))).times(Mat4.translation(Vec.of(40 + i*3, 0, 0)));
+        size = 2.3;
+      } else {
+        n = m.times(Mat4.rotation(i * Math.PI/4 - Math.PI/2, Vec.of(0, 1, 0))).times(Mat4.translation(Vec.of(40 + i*3, 0, 0)));
+        size = 1.8;
+      }
+      this.draw_flower(n, graphics_state, size);
+    }
+    let f_pos = m.times(Mat4.translation(Vec.of(-20, 0, 20)));
+    this.draw_flower(f_pos, graphics_state, 1.3)
+    f_pos = m.times(Mat4.translation(Vec.of(-23, 0, -18)));
+    this.draw_flower(f_pos, graphics_state, 1.6);
+
+    //////////////////////////////////////////////////////////////
+
+    /////////////////////////// BUTTERFLY ///////////////////////////
     m = Mat4.identity();
     this.path_t += this.increment;
     if (this.path_t >= 1) {

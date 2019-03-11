@@ -36,9 +36,9 @@ let groundMixin = {
         this.plastic.override({ color: this.green })
       );
     }
-    this.shapes.pyramid.draw(
+    this.shapes.flatpyramid.draw(
       graphics_state,
-      m.times(Mat4.translation(Vec.of(0, 2, 0))).times(Mat4.scale(1.5)),
+      m.times(Mat4.translation(Vec.of(0, 1.8, 0))).times(Mat4.scale(Vec.of(1,1.5,1))),
       this.plastic.override({ color: this.green })
     );
   },
@@ -69,19 +69,14 @@ let groundMixin = {
   cover_farm_with_grass_patches(graphics_state, m) {
     this.draw_grass_patch(graphics_state, m, 400, 214);
     this.draw_grass_patch(graphics_state, m, 256, 298);
-    this.draw_grass_patch(graphics_state, m, 526, 231);
+
     this.draw_grass_patch(graphics_state, m, 235, 324);
     this.draw_grass_patch(graphics_state, m, 123, 42);
-    this.draw_grass_patch(graphics_state, m, 22, 532);
-    this.draw_grass_patch(graphics_state, m, 599, 425);
-
-    this.draw_grass_patch(graphics_state, m, -400, 214);
     this.draw_grass_patch(graphics_state, m, -256, 298);
-    this.draw_grass_patch(graphics_state, m, -526, 231);
+    
     this.draw_grass_patch(graphics_state, m, -235, 324);
     this.draw_grass_patch(graphics_state, m, -123, 42);
     this.draw_grass_patch(graphics_state, m, -22, 532);
-    this.draw_grass_patch(graphics_state, m, -599, 425);
 
     this.draw_grass_patch(graphics_state, m, 400, -214);
     this.draw_grass_patch(graphics_state, m, 256, -298);
@@ -89,15 +84,13 @@ let groundMixin = {
     this.draw_grass_patch(graphics_state, m, 235, -324);
     this.draw_grass_patch(graphics_state, m, 123, -42);
     this.draw_grass_patch(graphics_state, m, 22, -532);
-    this.draw_grass_patch(graphics_state, m, 599, -425);
 
-    this.draw_grass_patch(graphics_state, m, -400, -214);
+    
     this.draw_grass_patch(graphics_state, m, -256, -298);
-    this.draw_grass_patch(graphics_state, m, -526, -231);
+   
     this.draw_grass_patch(graphics_state, m, -235, -324);
     this.draw_grass_patch(graphics_state, m, -123, -42);
-    this.draw_grass_patch(graphics_state, m, -22, -532);
-    this.draw_grass_patch(graphics_state, m, -599, -425);
+
   },
 
   draw_firewood(graphics_state, m, xcoord, ycoord) {
