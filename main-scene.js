@@ -164,7 +164,7 @@ class Assignment_Two extends Scene_Component {
     this.path_t = 0;
     this.increment = 0.01; 
     this.camera_transform = false;
-    context.globals.graphics_state.camera_transform = Mat4.translation([0, 0, -35]);
+    context.globals.graphics_state.camera_transform = Mat4.translation([0, 0, -300]);
         context.globals.graphics_state.projection_transform = Mat4.perspective(Math.PI / 4, r, .1, 1000);
         this.target_position = Vec.of(0, 5, 0);
         this.og_target_position = Vec.of(-100, -100, -100);
@@ -191,7 +191,7 @@ class Assignment_Two extends Scene_Component {
       y = Math.pow(1-t, 2) * p0[1] + 
               (1-t) * 2 * t * p1[1] + 
               t * t * p2[1];
-      return Vec.of(x, y, 0);
+      return Vec.of(x, y, p1[2]);
   }
       
   display(graphics_state) {
@@ -230,7 +230,6 @@ class Assignment_Two extends Scene_Component {
     this.draw_cloud(m, graphics_state, 5, 50, 55);
     this.draw_cloud(m, graphics_state, 6.5, 25, 54);
     this.draw_cow(graphics_state, m, 2);
-    this.draw_cloud(m, graphics_state, 100, 100, 60);
 //     this.draw_cloud(m, graphics_state, -100, 0, 48);
 //     this.draw_cloud(m, graphics_state, -200, 0, 60);
 
@@ -260,16 +259,18 @@ class Assignment_Two extends Scene_Component {
        this.increment = .01;
      }
 
+     let flower_scale = 3;
      m = Mat4.identity();
-     m = m.times(Mat4.translation(Vec.of(-20, 0, 0)));
-     this.draw_flower(m, graphics_state);
+     m = m.times(Mat4.translation(Vec.of(-40, 0, 600)));
+     this.draw_flower(m, graphics_state, flower_scale);
 
-     m = m.times(Mat4.translation(Vec.of(-20, 0, 0)));
-     this.draw_flower(m, graphics_state);
+     m = Mat4.identity();
+     m = m.times(Mat4.translation(Vec.of(40, 0, 600)));
+     this.draw_flower(m, graphics_state, flower_scale);
 
-     let flower1 = Vec.of(-20,0,0).plus(Vec.of(0, 17, 0)),
-        pmax = Vec.of(-30, 40, 0),
-        flower2 = Vec.of(-40,0,0).plus(Vec.of(0, 17, 0));
+     let flower1 = Vec.of(-40,0, 600).plus(Vec.of(0, flower_scale * 10, 0)),
+        pmax = Vec.of(0, 90, 600),
+        flower2 = Vec.of(40,0, 600).plus(Vec.of(0, flower_scale * 10, 0));
      
      m = Mat4.identity();
      let translate_vec = this.make_bezier_curve(flower1, pmax, flower2, this.path_t);
