@@ -36,9 +36,9 @@ let groundMixin = {
         this.plastic.override({ color: this.green })
       );
     }
-    this.shapes.pyramid.draw(
+    this.shapes.flatpyramid.draw(
       graphics_state,
-      m.times(Mat4.translation(Vec.of(0, 2, 0))).times(Mat4.scale(1.5)),
+      m.times(Mat4.translation(Vec.of(0, 1.8, 0))).times(Mat4.scale(Vec.of(1,1.5,1))),
       this.plastic.override({ color: this.green })
     );
   },
