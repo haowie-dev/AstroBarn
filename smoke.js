@@ -5,8 +5,7 @@ class smoke_particle {
     this.z_spread = z_spread;
     this.count = 0;
     this.count_step = 0.1;
-    this.particle_size = 0.2;
-    this.random_factor = 0.000001;
+    this.particle_size = 0.5;
     this.alpha_start = 1.2;
     this.x_initial = 0;
     this.y_initial = 0;

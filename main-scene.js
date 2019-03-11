@@ -306,12 +306,13 @@ class Assignment_Two extends Scene_Component {
       aerial: Vec.of(Math.sin(this.t), 50, Math.sin(this.t) + 350),
       butterfly: Vec.of(0, 0, 0),
       chicken: Vec.of(0, 0, 0),
-      cow: Vec.of(0, 0, 0),
-      smoke: Vec.of(Math.sin(this.t), Math.sin(this.t), 0),
+      cow: Vec.of(500, -150, 300),
+      smoke: Vec.of(162, 53, -12),
       grass: Vec.of(0, 0, 0)
     };
     this.target_camera_name = "aerial";
     this.target_position = this.camera_positions.aerial;
+    this.target_rotation = Mat4.rotation(0, Vec.of(1, 0, 0));
   }
 
   make_control_panel() {
@@ -366,28 +367,36 @@ class Assignment_Two extends Scene_Component {
           50,
           400 * Math.cos(this.t / 2) + 550
         );
+        this.target_rotation = Mat4.rotation(0, Vec.of(1, 0, 0));
         break;
       case "butterfly":
         this.target_position = this.camera_positions.butterfly;
         this.target_position[1] -= 250;
         this.target_position[2] -= 50;
+        this.target_rotation = Mat4.rotation(0, Vec.of(1, 0, 0));
         break;
       case "chicken":
         this.target_position = this.camera_positions.chicken;
+        this.target_rotation = Mat4.rotation(0, Vec.of(1, 0, 0));
         break;
       case "cow":
         this.target_position = this.camera_positions.cow;
+        this.target_rotation = Mat4.rotation(
+          Math.sin(this.t * 8) / 200,
+          Vec.of(1, 0, 0)
+        );
         break;
       case "smoke":
         this.target_position = this.camera_positions.smoke;
+        this.target_rotation = Mat4.rotation(this.t / 2, Vec.of(0, 1, 0));
         break;
       case "grass":
         this.target_position = this.camera_positions.smoke;
+        this.target_rotation = Mat4.rotation(Math.sin(this.t), Vec.of(0, 1, 0));
         break;
     }
 
     if (this.camera_transform == true) {
-      console.log(this.target_position[0], this.target_position[1]);
       graphics_state.camera_transform = Mat4.look_at(
         Vec.of(
           this.target_position[0],
@@ -396,40 +405,42 @@ class Assignment_Two extends Scene_Component {
         ), // camera position + rotation
         this.target_position, // reference position to be centered in view
         Vec.of(0, 1, 0) // up direction
-      ).times(Mat4.rotation(Math.PI / 8, Vec.of(1, 0, 0)));
+      )
+        .times(Mat4.rotation(Math.PI / 8, Vec.of(1, 0, 0)))
+        .times(this.target_rotation);
     }
 
     let m = Mat4.identity();
     /////////////////////////// ENVIRONMENT ///////////////////////////
-    this.draw_clouds(m, graphics_state, this.clouds);
+    // this.draw_clouds(m, graphics_state, this.clouds);
     this.draw_floor(graphics_state, m);
-    this.draw_fence_enclosure(graphics_state, m);
+    // this.draw_fence_enclosure(graphics_state, m);
     // this.cover_farm_with_grass_patches(graphics_state, m);
     // this.cover_farm_firewood(graphics_state, m, 200, 150);
 
-    m = m.times(Mat4.translation(Vec.of(100, 0, -300)));
-    this.draw_silo(m, graphics_state);
+    // m = m.times(Mat4.translation(Vec.of(100, 0, -300)));
+    // this.draw_silo(m, graphics_state);
+
+    // m = Mat4.identity();
+    // m = m.times(Mat4.translation(Vec.of(0, 0, 200)));
+    // this.draw_stable_roof(m, graphics_state);
 
     m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(0, 0, 200)));
-    this.draw_stable_roof(m, graphics_state);
-
-    m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(20, 0, -20)));
-    this.draw_barn(graphics_state, m, 3);
+    // m = m.times(Mat4.translation(Vec.of(20, 0, -20)));
+    // this.draw_barn(graphics_state, m, 3);
     // //////////////////////////////////////////////////////////////
 
     /////////////////////////// COWS ///////////////////////////
     m = Mat4.identity();
     this.draw_cow(graphics_state, m, 4, 600, 18, 400);
-    // this.draw_cow(graphics_state, m, 4, 500, 18, 350);
-    // this.draw_cow(graphics_state, m, 4, 300, 18, 250);
+    this.draw_cow(graphics_state, m, 4, 500, 18, 350);
+    this.draw_cow(graphics_state, m, 4, 300, 18, 250);
 
     // //////////////////////////////////////////////////////////////
 
     /////////////////////////// SMOKE ///////////////////////////
     m = Mat4.identity();
-    // m = m.times(Mat4.translation(Vec.of(-20, 40, 0)));
+    // m = m.times(Mat4.translation(Vec.of(62, 53, -12)));
     // this.draw_smoke_chimney(m, graphics_state, this.smoke_array, 40);
     // //////////////////////////////////////////////////////////////
 
@@ -448,6 +459,14 @@ class Assignment_Two extends Scene_Component {
     // for (var i = 0; i < this.chicken_array.length; i++) {
     //   m = Mat4.identity();
     //   this.chicken_array[i].draw(this, m, graphics_state, t);
+
+    //   if (i == 4) {
+    //     this.camera_positions.chicken = Vec.of(
+    //       this.chicken_array[i].x_pos(this.t),
+    //       this.chicken_array[i].y_pos(this.t),
+    //       this.chicken_array[i].z_pos(this.t)
+    //     );
+    //   }
     // }
     // //////////////////////////////////////////////////////////////
 
@@ -467,32 +486,31 @@ class Assignment_Two extends Scene_Component {
     // //////////////////////////////////////////////////////////////
 
     /////////////////////////// OTHER FLOWERS ///////////////////////
-    m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(-200, 0, 500)));
-    this.draw_flower(m, graphics_state, 1.8);
-    for (let i = 0; i < 8; i++) {
-      let n = m;
-      let size = 2;
-      if (i % 2 === 0) {
-        n = m
-          .times(Mat4.rotation((i * Math.PI) / 4, Vec.of(0, 1, 0)))
-          .times(Mat4.translation(Vec.of(40 + i * 3, 0, 0)));
-        size = 2.3;
-      } else {
-        n = m
-          .times(
-            Mat4.rotation((i * Math.PI) / 4 - Math.PI / 2, Vec.of(0, 1, 0))
-          )
-          .times(Mat4.translation(Vec.of(40 + i * 3, 0, 0)));
-        size = 1.8;
-      }
-      this.draw_flower(n, graphics_state, size);
-    }
-    let f_pos = m.times(Mat4.translation(Vec.of(-20, 0, 20)));
-    this.draw_flower(f_pos, graphics_state, 1.3);
-    f_pos = m.times(Mat4.translation(Vec.of(-23, 0, -18)));
-    this.draw_flower(f_pos, graphics_state, 1.6);
-
+    // m = Mat4.identity();
+    // m = m.times(Mat4.translation(Vec.of(-200, 0, 500)));
+    // this.draw_flower(m, graphics_state, 1.8);
+    // for (let i = 0; i < 8; i++) {
+    //   let n = m;
+    //   let size = 2;
+    //   if (i % 2 === 0) {
+    //     n = m
+    //       .times(Mat4.rotation((i * Math.PI) / 4, Vec.of(0, 1, 0)))
+    //       .times(Mat4.translation(Vec.of(40 + i * 3, 0, 0)));
+    //     size = 2.3;
+    //   } else {
+    //     n = m
+    //       .times(
+    //         Mat4.rotation((i * Math.PI) / 4 - Math.PI / 2, Vec.of(0, 1, 0))
+    //       )
+    //       .times(Mat4.translation(Vec.of(40 + i * 3, 0, 0)));
+    //     size = 1.8;
+    //   }
+    //   this.draw_flower(n, graphics_state, size);
+    // }
+    // let f_pos = m.times(Mat4.translation(Vec.of(-20, 0, 20)));
+    // this.draw_flower(f_pos, graphics_state, 1.3);
+    // f_pos = m.times(Mat4.translation(Vec.of(-23, 0, -18)));
+    // this.draw_flower(f_pos, graphics_state, 1.6);
     //////////////////////////////////////////////////////////////
 
     /////////////////////////// BUTTERFLY ///////////////////////////
