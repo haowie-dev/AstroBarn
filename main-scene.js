@@ -345,7 +345,7 @@ class Assignment_Two extends Scene_Component {
     this.draw_cow(graphics_state, m);
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
 
-    this.draw_barn(graphics_state, m);
+    this.draw_barn(graphics_state, m, 2);
     this.draw_fence_enclosure(graphics_state, m);
 
     // SMOKE
