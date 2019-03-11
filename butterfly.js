@@ -33,7 +33,7 @@ let ButterflyMixin = {
     },
 
     draw_butterfly_wing (graphics_state, m, side) {
-        const deg = side * 0.7 * Math.sin(4 * this.t)
+        const deg = side * 0.7 * Math.sin(6 * this.t)
         this.shapes.triangular_prism.draw( // triangle part
             graphics_state,
             m.times(Mat4.translation(Vec.of(0,2 ,side * 2))) // align wing with thorax
