@@ -73,14 +73,15 @@ class Assignment_Two extends Scene_Component {
     this.pink = Color.of(220 / 255, 200 / 255, 200 / 255, 1); 
     this.dark_blue = Color.of(0, 120/255,1,1);
     this.brown = Color.of(208 / 255, 167 / 255, 142 / 255, 1)
-
+    this.silver = Color.of(211 / 255, 211 / 255 , 211 / 255, 1);
     // Load some textures for the demo shapes
     this.shape_materials = {};
     const shape_textures = {
       square: "assets/dirt.png",
       cylinder: "assets/cow3.png",
       petal: "assets/flower-texture.jpg",
-      petal2: "assets/flower-texture-2.jpg"
+      petal2: "assets/flower-texture-2.jpg",
+      astro: "assets/astro.png"
     };
     for (let t in shape_textures)
       this.shape_materials[t] = this.texture_base.override({
@@ -102,6 +103,9 @@ class Assignment_Two extends Scene_Component {
     var x_3_func = function(t) {
       return 5 * (Math.cos(5 * t) + 15);
     };
+    var x_4_func = function(t) {
+        return 10 * (Math.cos(2*t)) + 10;
+    }
     var y_func = function(t) {
       return 5 * Math.sin(2 * t);
     };
@@ -161,8 +165,8 @@ class Assignment_Two extends Scene_Component {
       y_2_func,
       z_2_func,
       10,
-      450,
-      200,
+      350,
+      150,
       0
     );
     var fifth_chicken = new shape_chicken_pos(
@@ -184,7 +188,7 @@ class Assignment_Two extends Scene_Component {
       0
     );
     var seventh_chicken = new shape_chicken_pos(
-      x_func,
+      x_4_func,
       y_2_func,
       z_2_func,
       10,
@@ -224,8 +228,8 @@ class Assignment_Two extends Scene_Component {
       y_func,
       z_func,
       10,
-      275,
-      350,
+      315,
+      250,
       0
     );
     var twelfth_chicken = new shape_chicken_pos(
@@ -247,7 +251,7 @@ class Assignment_Two extends Scene_Component {
       0
     );
     var fourteenth_chicken = new shape_chicken_pos(
-      x_3_func,
+      x_4_func,
       y_func,
       z_func,
       10,
@@ -297,6 +301,10 @@ class Assignment_Two extends Scene_Component {
     );
     this.target_position = Vec.of(0, 5, 0);
     this.og_target_position = Vec.of(-100, -100, -100);
+  }
+
+  draw_silo(m, graphics_state) {
+
   }
 
 
@@ -500,6 +508,46 @@ class Assignment_Two extends Scene_Component {
     }
 
                 ////////////////////////////////////////////
+    this.draw_silo(m, graphics_state);
+    m = m.times(Mat4.rotation(Math.PI/2, Vec.of(1, 0, 0)));
+    this.shapes.cylinder.draw(
+      graphics_state,
+      m.times(Mat4.translation(Vec.of(-250, -40, -50)))
+      .times(Mat4.rotation(-Math.PI, Vec.of(1, 0, 0)))
+      .times(Mat4.scale(Vec.of(50, 50, 75))),
+      this.plastic.override({ color: this.silver }));
+    this.shapes.box.draw(
+        graphics_state,
+        m.times(Mat4.translation(Vec.of(-240, 10, -50)))
+        .times(Mat4.rotation(-Math.PI/2, Vec.of(1, 0, 0)))
+        .times(Mat4.rotation(-Math.PI/2, Vec.of(0, 0, 1)))
+        .times(Mat4.scale(Vec.of(30, 30, 1))),
+        this.shape_materials["astro"]);
+    this.shapes.ball.draw(
+        graphics_state,
+        m.times(Mat4.translation(Vec.of(-250, -40, -125))).
+        times(Mat4.scale(49.5, 49.5, 49.5)),
+        this.plastic.override({ color: this.silver }));
+
+    m = m.times(Mat4.translation(Vec.of(0, -1000, 0)));
+    this.shapes.cylinder.draw(
+      graphics_state,
+      m.times(Mat4.translation(Vec.of(-250, -40, -50)))
+      .times(Mat4.rotation(-Math.PI, Vec.of(1, 0, 0)))
+      .times(Mat4.scale(Vec.of(50, 50, 75))),
+      this.plastic.override({ color: this.silver }));
+    this.shapes.box.draw(
+        graphics_state,
+        m.times(Mat4.translation(Vec.of(-240, 10, -50)))
+        .times(Mat4.rotation(-Math.PI/2, Vec.of(1, 0, 0)))
+        .times(Mat4.rotation(-Math.PI/2, Vec.of(0, 0, 1)))
+        .times(Mat4.scale(Vec.of(30, 30, 1))),
+        this.shape_materials["astro"]);
+    this.shapes.ball.draw(
+        graphics_state,
+        m.times(Mat4.translation(Vec.of(-250, -40, -125))).
+        times(Mat4.scale(49.1, 49.1, 49.1)),
+        this.plastic.override({ color: this.silver }));
     m = Mat4.identity();
    
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
