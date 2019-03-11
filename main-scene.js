@@ -77,6 +77,7 @@ class Assignment_Two extends Scene_Component {
     this.shape_materials = {};
     const shape_textures = {
       square: "assets/dirt.png",
+      cylinder: "assets/cow3.png",
       petal: "assets/flower-texture.jpg",
       petal2: "assets/flower-texture-2.jpg"
     };

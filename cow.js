@@ -16,7 +16,7 @@ let CowMixin = {
       m
         .times(Mat4.rotation(Math.PI / 2, Vec.of(0, 1, 0)))
         .times(Mat4.scale(s * 4)),
-      this.clay
+      this.shape_materials["cylinder"] || this.plastic
     );
     this.shapes.ball.draw(
       // front sphere
@@ -24,7 +24,7 @@ let CowMixin = {
       m
         .times(Mat4.translation(Vec.of(s * -4, 0, 0)))
         .times(Mat4.scale(Vec.of(s * 3, s * 4, s * 4))),
-      this.clay
+      this.shape_materials["cylinder"] || this.plastic
     );
     this.shapes.ball.draw(
       // back sphere
@@ -32,7 +32,7 @@ let CowMixin = {
       m
         .times(Mat4.translation(Vec.of(s * 4, 0, 0)))
         .times(Mat4.scale(Vec.of(s * 3, s * 4, s * 4))),
-      this.clay
+      this.shape_materials["cylinder"] || this.plastic
     );
   },
   draw_legs(graphics_state, m, side, fb, s) {
@@ -47,7 +47,7 @@ let CowMixin = {
       // first joint
       graphics_state,
       m.times(Mat4.scale(s * 1.3)),
-      this.clay
+      this.shape_materials["cylinder"] || this.plastic
     );
     this.shapes.cylinder.draw(
       // draw first leg section
@@ -56,12 +56,13 @@ let CowMixin = {
         .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
         .times(Mat4.translation(Vec.of(0, 0, s * 1.3)))
         .times(Mat4.scale(s * 1.3)),
-      this.clay
+      this.shape_materials["cylinder"] || this.plastic
     );
     m = m
       .times(Mat4.translation(Vec.of(0, s * -2.6, 0))) // move system to second leg joint
       .times(Mat4.rotation(-0.4 * deg, Vec.of(0, 0, 1)));
-    this.shapes.ball.draw(graphics_state, m.times(Mat4.scale(s * 1.3)), this.clay);
+    this.shapes.ball.draw(graphics_state, m.times(Mat4.scale(s * 1.3)), 
+      this.shape_materials["cylinder"] || this.plastic);
     this.shapes.cylinder.draw(
       // draw second leg section
       graphics_state,
@@ -69,19 +70,21 @@ let CowMixin = {
         .times(Mat4.rotation(Math.PI / 2, Vec.of(1, 0, 0)))
         .times(Mat4.translation(Vec.of(0, 0, s * 1.3)))
         .times(Mat4.scale(s * 1.3)),
-      this.clay
+      this.shape_materials["cylinder"] || this.plastic
     );
     m = m
       .times(Mat4.translation(Vec.of(0, s * -2.6, 0))) // move to third joint
       .times(Mat4.rotation(0.1 * deg, Vec.of(0, 0, 1)));
-    this.shapes.ball.draw(graphics_state, m.times(Mat4.scale(s * 1.3)), this.clay);
+    this.shapes.ball.draw(graphics_state, m.times(Mat4.scale(s * 1.3)), 
+      this.shape_materials["cylinder"] || this.plastic
+      );
     this.shapes.box.draw(
       // draw foot
       graphics_state,
       m
         .times(Mat4.translation(Vec.of(0, s * -0.75, 0)))
         .times(Mat4.scale(Vec.of(s * 1.3, s * 0.8, s * 1.3))),
-      this.clay
+      this.shape_materials["cylinder"] || this.plastic
     );
   },
   draw_tail(graphics_state, m, s) {
@@ -95,7 +98,7 @@ let CowMixin = {
       // first box
       graphics_state,
       m.times(Mat4.scale(s * 0.15)),
-      this.clay
+      this.clay.override({ color: Color.of(255, 255, 255, 1) })
     );
     for (let i = 0; i < 30; i++) {
       if (i < 9) {
@@ -113,7 +116,7 @@ let CowMixin = {
       this.shapes.box.draw(
         graphics_state,
         m.times(Mat4.scale(s * 0.15)),
-        this.clay
+        this.clay.override({ color: Color.of(255, 255, 255, 1) })
       );
     }
   },
@@ -126,7 +129,7 @@ let CowMixin = {
     this.shapes.cylinder.draw(
       graphics_state,
       m.times(Mat4.scale(Vec.of(s * 1.5, s * 1.5, s * 1))),
-      this.clay
+      this.shape_materials["cylinder"] || this.plastic
     );
     m = m.times(Mat4.translation(Vec.of(0, s * -0.8, s * 2.2)));
     this.shapes.ball.draw(
@@ -134,21 +137,21 @@ let CowMixin = {
       m
         .times(Mat4.scale(Vec.of(s * 3, s * 4, s * 2.5)))
         .times(Mat4.rotation(-Math.PI / 4, Vec.of(1, 0, 0))),
-      this.clay
+      this.shape_materials["cylinder"] || this.plastic
     );
     this.shapes.ball.draw(
       graphics_state,
       m
         .times(Mat4.scale(Vec.of(s * 1.7, s * 0.8, s * 0.3)))
         .times(Mat4.translation(Vec.of(-2.4, s * 1.4, 0))),
-      this.clay
+      this.clay.override({ color: Color.of(255, 255, 255, 1) })
     );
     this.shapes.ball.draw(
       graphics_state,
       m
         .times(Mat4.scale(Vec.of(s * 1.7, s * 0.8, s * 0.3)))
         .times(Mat4.translation(Vec.of(2.4, s * 1.4, 0))),
-      this.clay
+      this.clay.override({ color: Color.of(255, 255, 255, 1) })
     );
   }
 };
