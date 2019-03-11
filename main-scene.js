@@ -40,7 +40,8 @@ class Assignment_Two extends Scene_Component {
       cone: new Cone(20),
       ball: new Subdivision_Sphere(4),
       triangular_prism: new TriangularPrism(),
-      petal: new Petal()
+      petal: new Petal(),
+      flatpyramid: new Pyramid(),
     };
     this.submit_shapes(context, shapes);
     this.shape_count = Object.keys(shapes).length;
