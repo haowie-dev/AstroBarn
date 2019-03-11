@@ -1,30 +1,3 @@
-class shape_chicken_pos {
-  constructor(x, y, z) {
-    this.x_pos = x;
-    this.y_pos = y;
-    this.z_pos = z;
-  }
-  detect_collision(t, other_shape) {
-      var ball_1_x = this.x_pos(t);
-      var ball_1_y = this.y_pos(t);
-      var ball_1_z = this.z_pos(t);
-      var ball_2_x = other_shape.x_pos(t);
-      var ball_2_y = other_shape.y_pos(t);
-      var ball_2_z = other_shape.z_pos(t);
-      var dist = (ball_1_x - ball_2_x) * (ball_1_x - ball_2_x) + (ball_1_y - ball_2_y) * (ball_1_x - ball_2_x) + (ball_1_z - ball_2_z) * (ball_1_z - ball_2_z);
-      console.log(dist);
-      if (dist < 2000) {
-          return true;
-      }
-      return false; 
-  }
-  draw(scene, m, graphics_state, t) {
-      m = m.times(Mat4.translation(Vec.of(this.x_pos(t), this.y_pos(t), this.z_pos(t))));
-      scene.draw_chicken(m, graphics_state, 15, 0, -20, 40);
-  }
-}
-
-
 class Assignment_Two extends Scene_Component {
   // The scene begins by requesting the camera, shapes, and materials it will need.
   constructor(context, control_box) {
@@ -94,6 +67,7 @@ class Assignment_Two extends Scene_Component {
     this.yellow = Color.of(1, 1, 0, 1);
     this.brick = Color.of(178 / 255, 34 / 255, 34 / 255, 1);
     this.ground_color = Color.of(148 / 255, 114 / 255, 79 / 255, 1);
+    this.smoke_color = Color.of(169 / 255, 169 / 255, 169 / 255, 0.9);
 
     // Load some textures for the demo shapes
     this.shape_materials = {};
@@ -118,36 +92,46 @@ class Assignment_Two extends Scene_Component {
 
     this.t = 0;
     var x_func = function(t) {
-        return Math.sin(10*t) +15;
-    }
+      return Math.sin(10 * t) + 15;
+    };
     var y_func = function(t) {
-      return 5 * Math.sin(2*t);
-    }
+      return 5 * Math.sin(2 * t);
+    };
     var z_func = function(t) {
       return -35.7;
-    }
+    };
     var x_2_func = function(t) {
-      return Math.sin(t) * 10 -40;
-    }
+      return Math.sin(t) * 10 - 40;
+    };
     var y_2_func = function(t) {
-      return 5 * Math.sin(2*t);
-    }
+      return 5 * Math.sin(2 * t);
+    };
     var z_2_func = function(t) {
       return -35.7;
-    }
+    };
     var first_chicken = new shape_chicken_pos(x_func, y_func, z_func);
     var second_chicken = new shape_chicken_pos(x_2_func, y_2_func, z_2_func);
-    this.array = [first_chicken, second_chicken]; 
+    this.chicken_array = [first_chicken, second_chicken];
 
+    // SMOKE SET UP
+    this.smoke_array = [];
+    for (let i = 0; i < 750; i++) {
+      const acceleration = getRandom(4, 20);
+      const x_spread = getRandom(3, 10);
+      const z_spread = getRandom(3, 10);
+      this.smoke_array.push(
+        new smoke_particle(acceleration, x_spread, z_spread)
+      );
+    }
   }
 
-  // Draw the scene's buttons, setup their actions and keyboard shortcuts, and monitor live measurements.
+  // Draw the scene's buttons, setup their actions and keyboard shortcuts, and monitowr live measurements.
   make_control_panel() {
     this.key_triggered_button("Pause Time", ["n"], () => {
       this.paused = !this.paused;
     });
   }
-      
+
   display(graphics_state) {
     // Use the lights stored in this.lights.
     graphics_state.lights = this.lights;
@@ -158,38 +142,53 @@ class Assignment_Two extends Scene_Component {
     window.color = Color.of(1, 0, 0, 10);
 
     let m = Mat4.identity();
-    this.draw_floor(graphics_state, m)
-
+    this.draw_floor(graphics_state, m);
     this.draw_cloud(m, graphics_state, 8, 0, 50);
     this.draw_cloud(m, graphics_state, 3, 30, 40);
     this.draw_cloud(m, graphics_state, 7, -50, 45);
     this.draw_cloud(m, graphics_state, 5, 50, 55);
     this.draw_cloud(m, graphics_state, 6.5, 25, 54);
     this.draw_cow(graphics_state, m);
+
     m = m.times(Mat4.translation(Vec.of(30, 0, 0)));
+
     this.draw_barn(graphics_state, m);
     this.draw_fence_enclosure(graphics_state, m);
-     for (var i = 0; i < this.array.length; i++) {
-       for (var j = i+1; j < this.array.length; j++) {
-         if (this.array[i].detect_collision(t, this.array[j])) {
-           this.array.splice(i, 1);
-         }
-       }
-     }
-     for (var i = 0; i < this.array.length; i++) {
-       m = Mat4.identity();
-       m = m.times(Mat4.rotation(-1*Math.PI/2, Vec.of(1, 0, 0))); 
-       this.array[i].draw(this, m, graphics_state, t);
-     }
+    for (var i = 0; i < this.chicken_array.length; i++) {
+      for (var j = i + 1; j < this.chicken_array.length; j++) {
+        if (this.chicken_array[i].detect_collision(t, this.chicken_array[j])) {
+          this.chicken_array.splice(i, 1);
+        }
+      }
+      for (var i = 0; i < this.chicken_array.length; i++) {
+        m = Mat4.identity();
+        m = m.times(Mat4.rotation((-1 * Math.PI) / 2, Vec.of(1, 0, 0)));
+        this.chicken_array[i].draw(this, m, graphics_state, t);
+      }
 
-    m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
+      m = m.times(Mat4.translation(Vec.of(-3 * t, 0, 0)));
+
+      // SMOKE
+      m = Mat4.identity();
+      m = m.times(Mat4.translation(Vec.of(0, 1, 10)));
+      for (var i = 0; i < this.smoke_array.length; i++) {
+        this.smoke_array[i].draw(this, m, graphics_state);
+      }
+      this.draw_smoke_chimney(m, graphics_state, this.smoke_array, 40);
+    }
   }
 }
+
+function getRandom(min, max) {
+  return Math.random() * (max - min + 1) + min;
+}
+
 Object.assign(Assignment_Two.prototype, CowMixin);
 Object.assign(Assignment_Two.prototype, BarnMixin);
 Object.assign(Assignment_Two.prototype, CloudMixin);
-Object.assign(Assignment_Two.prototype, ChickenMixin); 
+Object.assign(Assignment_Two.prototype, ChickenMixin);
 Object.assign(Assignment_Two.prototype, groundMixin);
 Object.assign(Assignment_Two.prototype, FenceMixin);
+Object.assign(Assignment_Two.prototype, SmokeMixin);
 
 window.Assignment_Two = window.classes.Assignment_Two = Assignment_Two;
