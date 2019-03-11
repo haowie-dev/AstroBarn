@@ -6,11 +6,11 @@
 
 let FenceMixin = {
   draw_fence_enclosure(graphics_state, m) {
-    for (var i = -600; i <= 600; i += 100) {
+    for (var i = -300; i <= 600; i += 100) {
       this.draw_fence(graphics_state, m, i, 0, 650, 1.571, 0, 1, 0);
     }
 
-    for (var i = -600; i <= 600; i += 100) {
+    for (var i = -300; i <= 600; i += 100) {
       this.draw_fence(graphics_state, m, i, 0, -650, 1.571, 0, 1, 0);
     }
 
@@ -27,7 +27,7 @@ let FenceMixin = {
     }
 
     for (var i = -600; i <= 600; i += 100) {
-      this.draw_fence(graphics_state, m, i, 0, -650, 1.571, 0, 1, 0);
+      this.draw_fence(graphics_state, m, i, 0, -350, 1.571, 0, 1, 0);
     }
 
 

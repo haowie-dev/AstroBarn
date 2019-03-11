@@ -6,9 +6,9 @@ let groundMixin = {
     this.shapes.square.draw(
       graphics_state,
       m.times(
-        Mat4.translation(Vec.of(0, -20, 0))
+        Mat4.translation(Vec.of(150, -20, 0))
           .times(Mat4.rotation(3.14, Vec.of(0, 1, 1)))
-          .times(Mat4.scale(Vec.of(700, 700, 0)))
+          .times(Mat4.scale(Vec.of(550, 650, 0)))
       ),
       this.shape_materials["square"] || this.plastic
     );
