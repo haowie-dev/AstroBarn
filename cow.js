@@ -84,7 +84,7 @@ let CowMixin = {
       m
         .times(Mat4.translation(Vec.of(0, s * -0.75, 0)))
         .times(Mat4.scale(Vec.of(s * 1.3, s * 0.8, s * 1.3))),
-      this.shape_materials["cylinder"] || this.plastic
+        this.plastic.override({ color: this.black })
     );
   },
   draw_tail(graphics_state, m, s) {
@@ -143,14 +143,14 @@ let CowMixin = {
       graphics_state,
       m
         .times(Mat4.scale(Vec.of(s * 1.7, s * 0.8, s * 0.3)))
-        .times(Mat4.translation(Vec.of(-2.4, s * 1.4, 0))),
+        .times(Mat4.translation(Vec.of(-2.4, 1.4, 0))),
       this.clay.override({ color: Color.of(255, 255, 255, 1) })
     );
     this.shapes.ball.draw(
       graphics_state,
       m
         .times(Mat4.scale(Vec.of(s * 1.7, s * 0.8, s * 0.3)))
-        .times(Mat4.translation(Vec.of(2.4, s * 1.4, 0))),
+        .times(Mat4.translation(Vec.of(2.4,  1.4, 0))),
       this.clay.override({ color: Color.of(255, 255, 255, 1) })
     );
   }
