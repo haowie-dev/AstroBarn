@@ -1,3 +1,11 @@
+class cloud_coords {
+  constructor(scale, y, z, height) {
+    this.scale = scale;
+    this.y_pos = y;
+    this.z_pos = z;
+    this.h = height;
+  }
+}
 let CloudMixin = {
   draw_cloud(m, graphics_state, scale, left_align, height) {
     m = m.times(Mat4.translation(Vec.of(0, height, 0)));
