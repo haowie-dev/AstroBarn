@@ -84,7 +84,8 @@ class Assignment_Two extends Scene_Component {
       cylinder: "assets/cow3.png",
       petal: "assets/flower-texture.jpg",
       petal2: "assets/flower-texture-2.jpg",
-      astro: "assets/astro.png"
+      astro: "assets/astro.png",
+      hay: "assets/hay-bale-texture.jpg"
     };
     for (let t in shape_textures)
       this.shape_materials[t] = this.texture_base.override({
@@ -412,106 +413,127 @@ class Assignment_Two extends Scene_Component {
 
     let m = Mat4.identity();
     /////////////////////////// ENVIRONMENT ///////////////////////////
-    // this.draw_clouds(m, graphics_state, this.clouds);
+    this.draw_clouds(m, graphics_state, this.clouds);
     this.draw_floor(graphics_state, m);
-    // this.draw_fence_enclosure(graphics_state, m);
-    // this.cover_farm_with_grass_patches(graphics_state, m);
-    // this.cover_farm_firewood(graphics_state, m, 200, 150);
+    this.draw_fence_enclosure(graphics_state, m);
+    this.cover_farm_with_grass_patches(graphics_state, m);
+    this.cover_farm_firewood(graphics_state, m, 200, 150);
 
-    // m = m.times(Mat4.translation(Vec.of(100, 0, -300)));
-    // this.draw_silo(m, graphics_state);
-
-    // m = Mat4.identity();
-    // m = m.times(Mat4.translation(Vec.of(0, 0, 200)));
-    // this.draw_stable_roof(m, graphics_state);
+    m = m.times(Mat4.translation(Vec.of(100, 0, -300)));
+    this.draw_silo(m, graphics_state);
 
     m = Mat4.identity();
-    // m = m.times(Mat4.translation(Vec.of(20, 0, -20)));
-    // this.draw_barn(graphics_state, m, 3);
-    // //////////////////////////////////////////////////////////////
+    m = m.times(Mat4.translation(Vec.of(0, 0, 200)));
+    this.draw_stable_roof(m, graphics_state);
 
-    /////////////////////////// COWS ///////////////////////////
+    m = Mat4.identity();
+    m = m.times(Mat4.translation(Vec.of(20, 0, -20)));
+    this.draw_barn(graphics_state, m, 3);
+    //////////////////////////////////////////////////////////////
+
+    /////////////////////////// COWS and HAY ///////////////////////////
     m = Mat4.identity();
     this.draw_cow(graphics_state, m, 4, 600, 18, 400);
     this.draw_cow(graphics_state, m, 4, 500, 18, 350);
     this.draw_cow(graphics_state, m, 4, 300, 18, 250);
 
-    // //////////////////////////////////////////////////////////////
+    m = m.times(Mat4.translation(Vec.of(300, 0, 400)))
+    this.shapes.box.draw(
+      graphics_state,
+      m.times(Mat4.scale(20)), this.shape_materials["hay"]
+    )
+    m = m.times(Mat4.translation(Vec.of(200, 0, 150)))
+    this.shapes.box.draw(
+      graphics_state,
+      m.times(Mat4.scale(20)), this.shape_materials["hay"]
+    )
+    m = Mat4.identity();
+    m = m.times(Mat4.translation(Vec.of(-100, 0, 200)))
+    this.shapes.box.draw(
+      graphics_state,
+      m.times(Mat4.scale(20)), this.shape_materials["hay"]
+    )
+    m = m.times(Mat4.translation(Vec.of(200, 0, 200)))
+    this.shapes.box.draw(
+      graphics_state,
+      m.times(Mat4.scale(20)), this.shape_materials["hay"]
+    )
+    //////////////////////////////////////////////////////////////
 
     /////////////////////////// SMOKE ///////////////////////////
     m = Mat4.identity();
-    // m = m.times(Mat4.translation(Vec.of(62, 53, -12)));
-    // this.draw_smoke_chimney(m, graphics_state, this.smoke_array, 40);
-    // //////////////////////////////////////////////////////////////
+    m = m.times(Mat4.translation(Vec.of(62, 53, -12)));
+    this.draw_smoke_chimney(m, graphics_state, this.smoke_array, 40);
+    //////////////////////////////////////////////////////////////
 
-    // /////////////////////////// CHICKENS ///////////////////////////
-    // for (var i = 0; i < this.chicken_array.length; i++) {
-    //   for (var j = i + 1; j < this.chicken_array.length; j++) {
-    //     if (this.chicken_array[i].detect_collision(t, this.chicken_array[j])) {
-    //       this.chicken_array[i].z_pos = function(t) {
-    //         return 3 * t;
-    //       };
-    //       this.chicken_array[i].alpha = 0.1;
-    //     }
-    //   }
-    // }
+    /////////////////////////// CHICKENS ///////////////////////////
+    for (var i = 0; i < this.chicken_array.length; i++) {
+      for (var j = i + 1; j < this.chicken_array.length; j++) {
+        if (this.chicken_array[i].detect_collision(t, this.chicken_array[j])) {
+          this.chicken_array[i].z_pos = function(t) {
+            return 3 * t;
+          };
+          this.chicken_array[i].alpha = 0.1;
+        }
+      }
+    }
 
-    // for (var i = 0; i < this.chicken_array.length; i++) {
-    //   m = Mat4.identity();
-    //   this.chicken_array[i].draw(this, m, graphics_state, t);
+    for (var i = 0; i < this.chicken_array.length; i++) {
+      m = Mat4.identity();
+      this.chicken_array[i].draw(this, m, graphics_state, t);
 
-    //   if (i == 4) {
-    //     this.camera_positions.chicken = Vec.of(
-    //       this.chicken_array[i].x_pos(this.t),
-    //       this.chicken_array[i].y_pos(this.t),
-    //       this.chicken_array[i].z_pos(this.t)
-    //     );
-    //   }
-    // }
-    // //////////////////////////////////////////////////////////////
+      if (i == 4) {
+        this.camera_positions.chicken = Vec.of(
+          this.chicken_array[i].x_pos(this.t),
+          this.chicken_array[i].y_pos(this.t),
+          this.chicken_array[i].z_pos(this.t)
+        );
+      }
+    }
+    //////////////////////////////////////////////////////////////
 
     // /////////////////////////// FLOWERS ///////////////////////////
     let flower_scale = 3;
     m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(-40, 0, 600)));
+    m = m.times(Mat4.translation(Vec.of(-40, -5, 600)));
     this.draw_flower(m, graphics_state, flower_scale);
 
     m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(40, 0, 600)));
+    m = m.times(Mat4.translation(Vec.of(40, -5, 600)));
     this.draw_flower(m, graphics_state, flower_scale);
 
-    let flower1 = Vec.of(-40, 0, 600).plus(Vec.of(0, flower_scale * 10, 0)),
+    let flower1 = Vec.of(-40, -5, 600).plus(Vec.of(0, flower_scale * 10, 0)),
       pmax = Vec.of(0, 90, 600),
-      flower2 = Vec.of(40, 0, 600).plus(Vec.of(0, flower_scale * 10, 0));
+      flower2 = Vec.of(40, -5, 600).plus(Vec.of(0, flower_scale * 10, 0));
     // //////////////////////////////////////////////////////////////
 
-    /////////////////////////// OTHER FLOWERS ///////////////////////
-    // m = Mat4.identity();
-    // m = m.times(Mat4.translation(Vec.of(-200, 0, 500)));
-    // this.draw_flower(m, graphics_state, 1.8);
-    // for (let i = 0; i < 8; i++) {
-    //   let n = m;
-    //   let size = 2;
-    //   if (i % 2 === 0) {
-    //     n = m
-    //       .times(Mat4.rotation((i * Math.PI) / 4, Vec.of(0, 1, 0)))
-    //       .times(Mat4.translation(Vec.of(40 + i * 3, 0, 0)));
-    //     size = 2.3;
-    //   } else {
-    //     n = m
-    //       .times(
-    //         Mat4.rotation((i * Math.PI) / 4 - Math.PI / 2, Vec.of(0, 1, 0))
-    //       )
-    //       .times(Mat4.translation(Vec.of(40 + i * 3, 0, 0)));
-    //     size = 1.8;
-    //   }
-    //   this.draw_flower(n, graphics_state, size);
-    // }
-    // let f_pos = m.times(Mat4.translation(Vec.of(-20, 0, 20)));
-    // this.draw_flower(f_pos, graphics_state, 1.3);
-    // f_pos = m.times(Mat4.translation(Vec.of(-23, 0, -18)));
-    // this.draw_flower(f_pos, graphics_state, 1.6);
-    //////////////////////////////////////////////////////////////
+    ///////////////////////// OTHER FLOWERS ///////////////////////
+    m = Mat4.identity();
+    m = m.times(Mat4.translation(Vec.of(-200, -5, 500)));
+    this.draw_flower(m, graphics_state, 1.8);
+    for (let i = 0; i < 8; i++) {
+      let n = m;
+      let size = 2;
+      if (i % 2 === 0) {
+        n = m
+          .times(Mat4.rotation((i * Math.PI) / 4, Vec.of(0, 1, 0)))
+          .times(Mat4.translation(Vec.of(40 + i * 3, -5, 0)));
+        size = 2.3;
+      } else {
+        n = m
+          .times(
+            Mat4.rotation((i * Math.PI) / 4 - Math.PI / 2, Vec.of(0, 1, 0))
+          )
+          .times(Mat4.translation(Vec.of(40 + i * 3, -10, 0)));
+        size = 1.8;
+      }
+      this.draw_flower(n, graphics_state, size);
+    }
+    let f_pos = m.times(Mat4.translation(Vec.of(-20, -10, 20)));
+    this.draw_flower(f_pos, graphics_state, 1.3);
+    f_pos = m.times(Mat4.translation(Vec.of(-23, -10, -18)));
+    this.draw_flower(f_pos, graphics_state, 1.6);
+    ////////////////////////////////////////////////////////////
 
     /////////////////////////// BUTTERFLY ///////////////////////////
     m = Mat4.identity();
