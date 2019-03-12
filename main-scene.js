@@ -185,7 +185,7 @@ class Assignment_Two extends Scene_Component {
       y_2_func,
       z_2_func,
       10,
-      500,
+      505,
       300,
       0
     );
