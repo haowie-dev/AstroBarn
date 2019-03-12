@@ -100,7 +100,7 @@ class Assignment_Two extends Scene_Component {
 
     // SMOKE SET UP
     this.smoke_array = [];
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 1000; i++) {
       const acceleration = getRandom(4, 20);
       const x_spread = getRandom(3, 10);
       const z_spread = getRandom(3, 10);
@@ -422,18 +422,18 @@ class Assignment_Two extends Scene_Component {
 
     let m = Mat4.identity();
     /////////////////////////// ENVIRONMENT ///////////////////////////
-    this.draw_clouds(m, graphics_state, this.clouds);
+    // this.draw_clouds(m, graphics_state, this.clouds);
     this.draw_floor(graphics_state, m);
     this.draw_fence_enclosure(graphics_state, m);
     this.cover_farm_with_grass_patches(graphics_state, m);
-    this.cover_farm_firewood(graphics_state, m, 200, 150);
+    // this.cover_farm_firewood(graphics_state, m, 200, 150);
 
     m = m.times(Mat4.translation(Vec.of(100, 0, -300)));
     this.draw_silo(m, graphics_state);
 
     m = Mat4.identity();
     m = m.times(Mat4.translation(Vec.of(0, 0, 200)));
-    this.draw_stable_roof(m, graphics_state);
+    // this.draw_stable_roof(m, graphics_state);
 
     m = Mat4.identity();
     m = m.times(Mat4.translation(Vec.of(20, 0, -20)));
@@ -441,32 +441,32 @@ class Assignment_Two extends Scene_Component {
     //////////////////////////////////////////////////////////////
 
     /////////////////////////// COWS and HAY ///////////////////////////
-    m = Mat4.identity();
-    this.draw_cow(graphics_state, m, 4, 600, 18, 400);
-    this.draw_cow(graphics_state, m, 4, 500, 18, 350);
-    this.draw_cow(graphics_state, m, 4, 300, 18, 250);
+    // m = Mat4.identity();
+    // this.draw_cow(graphics_state, m, 4, 600, 18, 400);
+    // this.draw_cow(graphics_state, m, 4, 500, 18, 350);
+    // this.draw_cow(graphics_state, m, 4, 300, 18, 250);
 
-    m = m.times(Mat4.translation(Vec.of(300, 0, 400)))
-    this.shapes.box.draw(
-      graphics_state,
-      m.times(Mat4.scale(20)), this.shape_materials["hay"]
-    )
-    m = m.times(Mat4.translation(Vec.of(200, 0, 150)))
-    this.shapes.box.draw(
-      graphics_state,
-      m.times(Mat4.scale(20)), this.shape_materials["hay"]
-    )
-    m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(-100, 0, 200)))
-    this.shapes.box.draw(
-      graphics_state,
-      m.times(Mat4.scale(20)), this.shape_materials["hay"]
-    )
-    m = m.times(Mat4.translation(Vec.of(200, 0, 200)))
-    this.shapes.box.draw(
-      graphics_state,
-      m.times(Mat4.scale(20)), this.shape_materials["hay"]
-    )
+    // m = m.times(Mat4.translation(Vec.of(300, 0, 400)))
+    // this.shapes.box.draw(
+    //   graphics_state,
+    //   m.times(Mat4.scale(20)), this.shape_materials["hay"]
+    // )
+    // m = m.times(Mat4.translation(Vec.of(200, 0, 150)))
+    // this.shapes.box.draw(
+    //   graphics_state,
+    //   m.times(Mat4.scale(20)), this.shape_materials["hay"]
+    // )
+    // m = Mat4.identity();
+    // m = m.times(Mat4.translation(Vec.of(-100, 0, 200)))
+    // this.shapes.box.draw(
+    //   graphics_state,
+    //   m.times(Mat4.scale(20)), this.shape_materials["hay"]
+    // )
+    // m = m.times(Mat4.translation(Vec.of(200, 0, 200)))
+    // this.shapes.box.draw(
+    //   graphics_state,
+    //   m.times(Mat4.scale(20)), this.shape_materials["hay"]
+    // )
     //////////////////////////////////////////////////////////////
 
     /////////////////////////// SMOKE ///////////////////////////
@@ -502,67 +502,67 @@ class Assignment_Two extends Scene_Component {
     // //////////////////////////////////////////////////////////////
 
     // /////////////////////////// FLOWERS ///////////////////////////
-    let flower_scale = 3;
-    m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(-40, -5, 600)));
-    this.draw_flower(m, graphics_state, flower_scale);
+    // let flower_scale = 3;
+    // m = Mat4.identity();
+    // m = m.times(Mat4.translation(Vec.of(-40, -5, 600)));
+    // this.draw_flower(m, graphics_state, flower_scale);
 
-    m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(40, -5, 600)));
-    this.draw_flower(m, graphics_state, flower_scale);
+    // m = Mat4.identity();
+    // m = m.times(Mat4.translation(Vec.of(40, -5, 600)));
+    // this.draw_flower(m, graphics_state, flower_scale);
 
-    let flower1 = Vec.of(-40, -5, 600).plus(Vec.of(0, flower_scale * 10, 0)),
-      pmax = Vec.of(0, 90, 600),
-      flower2 = Vec.of(40, -5, 600).plus(Vec.of(0, flower_scale * 10, 0));
+    // let flower1 = Vec.of(-40, -5, 600).plus(Vec.of(0, flower_scale * 10, 0)),
+    //   pmax = Vec.of(0, 90, 600),
+    //   flower2 = Vec.of(40, -5, 600).plus(Vec.of(0, flower_scale * 10, 0));
     // //////////////////////////////////////////////////////////////
 
     /////////////////////////// OTHER FLOWERS ///////////////////////
-    m = Mat4.identity();
-    m = m.times(Mat4.translation(Vec.of(-200, 0, 500)));
+    // m = Mat4.identity();
+    // m = m.times(Mat4.translation(Vec.of(-200, 0, 500)));
 
-    this.draw_flower(m, graphics_state, 1.8);
-    for (let i = 0; i < 8; i++) {
-      let n = m;
-      let size = 2;
-      if (i % 2 === 0) {
-        n = m
-          .times(Mat4.rotation((i * Math.PI) / 4, Vec.of(0, 1, 0)))
-          .times(Mat4.translation(Vec.of(40 + i * 3, -5, 0)));
-        size = 2.3;
-      } else {
-        n = m
-          .times(
-            Mat4.rotation((i * Math.PI) / 4 - Math.PI / 2, Vec.of(0, 1, 0))
-          )
-          .times(Mat4.translation(Vec.of(40 + i * 3, -10, 0)));
-        size = 1.8;
-      }
-      this.draw_flower(n, graphics_state, size);
-    }
-    let f_pos = m.times(Mat4.translation(Vec.of(-20, -10, 20)));
-    this.draw_flower(f_pos, graphics_state, 1.3);
-    f_pos = m.times(Mat4.translation(Vec.of(-23, -10, -18)));
-    this.draw_flower(f_pos, graphics_state, 1.6);
+    // this.draw_flower(m, graphics_state, 1.8);
+    // for (let i = 0; i < 8; i++) {
+    //   let n = m;
+    //   let size = 2;
+    //   if (i % 2 === 0) {
+    //     n = m
+    //       .times(Mat4.rotation((i * Math.PI) / 4, Vec.of(0, 1, 0)))
+    //       .times(Mat4.translation(Vec.of(40 + i * 3, -5, 0)));
+    //     size = 2.3;
+    //   } else {
+    //     n = m
+    //       .times(
+    //         Mat4.rotation((i * Math.PI) / 4 - Math.PI / 2, Vec.of(0, 1, 0))
+    //       )
+    //       .times(Mat4.translation(Vec.of(40 + i * 3, -10, 0)));
+    //     size = 1.8;
+    //   }
+    //   this.draw_flower(n, graphics_state, size);
+    // }
+    // let f_pos = m.times(Mat4.translation(Vec.of(-20, -10, 20)));
+    // this.draw_flower(f_pos, graphics_state, 1.3);
+    // f_pos = m.times(Mat4.translation(Vec.of(-23, -10, -18)));
+    // this.draw_flower(f_pos, graphics_state, 1.6);
     ////////////////////////////////////////////////////////////
 
     /////////////////////////// BUTTERFLY ///////////////////////////
-    m = Mat4.identity();
-    this.path_t += this.increment;
-    if (this.path_t >= 1) {
-      this.increment = -0.01;
-    } else if (this.path_t <= 0) {
-      this.increment = 0.01;
-    }
-    let translate_vec = this.make_bezier_curve(
-      flower1,
-      pmax,
-      flower2,
-      this.path_t
-    );
+    // m = Mat4.identity();
+    // this.path_t += this.increment;
+    // if (this.path_t >= 1) {
+    //   this.increment = -0.01;
+    // } else if (this.path_t <= 0) {
+    //   this.increment = 0.01;
+    // }
+    // let translate_vec = this.make_bezier_curve(
+    //   flower1,
+    //   pmax,
+    //   flower2,
+    //   this.path_t
+    // );
 
-    m = m.times(Mat4.translation(translate_vec));
-    this.camera_positions.butterfly = translate_vec;
-    this.draw_butterfly(m, graphics_state);
+    // m = m.times(Mat4.translation(translate_vec));
+    // this.camera_positions.butterfly = translate_vec;
+    // this.draw_butterfly(m, graphics_state);
     // //////////////////////////////////////////////////////////////
   }
 }
