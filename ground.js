@@ -91,6 +91,7 @@ let groundMixin = {
     this.draw_grass_patch(graphics_state, m, -235, -324);
     this.draw_grass_patch(graphics_state, m, -123, -42);
 
+    this.draw_grass_patch(graphics_state, m, -200, 500);
   },
 
   draw_firewood(graphics_state, m, xcoord, ycoord) {
